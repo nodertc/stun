@@ -1,0 +1,62 @@
+{
+  "name": "stun-agent",
+  "version": "0.0.0",
+  "description": "STUN - Session Traversal Utilities for NAT.",
+  "main": "index.js",
+  "scripts": {
+    "test": "xo && jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reklatsmasters/stun.git"
+  },
+  "keywords": [
+    "webrtc",
+    "stun",
+    "rfc5389",
+    "5389"
+  ],
+  "author": "Dmitry Tsvettsikh <me@reklatsmasters.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/reklatsmasters/stun/issues"
+  },
+  "homepage": "https://github.com/reklatsmasters/stun#readme",
+  "devDependencies": {
+    "jest": "^20.0.4",
+    "xo": "^0.18.2"
+  },
+  "dependencies": {
+    "binary-data": "github:reklatsmasters/binary-data",
+    "buffer-xor": "^2.0.1",
+    "crc": "^3.4.4",
+    "ipaddr.js": "^1.4.0",
+    "is-stun": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "xo": {
+    "semicolon": false,
+    "space": 2,
+    "rules": {
+      "object-curly-spacing": [
+        "error",
+        "always"
+      ]
+    },
+    "ignores": [
+      "**/test/**"
+    ]
+  },
+  "jest": {
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "testRegex": "test/(.*)\\.js$",
+    "coverageDirectory": "<rootDir>/coverage",
+    "coveragePathIgnorePatterns": [
+      "/test/"
+    ]
+  }
+}
