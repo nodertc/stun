@@ -1,7 +1,7 @@
 {
-  "name": "stun-agent",
+  "name": "stun",
   "version": "0.0.0",
-  "description": "STUN - Session Traversal Utilities for NAT.",
+  "description": "Session Traversal Utilities for NAT (STUN) client / server.",
   "main": "index.js",
   "scripts": {
     "test": "xo && jest"
@@ -27,7 +27,7 @@
     "xo": "^0.18.2"
   },
   "dependencies": {
-    "binary-data": "github:reklatsmasters/binary-data",
+    "binary-data": "^0.1.0",
     "buffer-xor": "^2.0.1",
     "crc": "^3.4.4",
     "ipaddr.js": "^1.4.0",
