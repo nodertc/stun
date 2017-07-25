@@ -1,6 +1,6 @@
 # stun
 
-Session Traversal Utilities for NAT (STUN) client / server. Implements [RFC5389](https://tools.ietf.org/html/rfc5389).
+Session Traversal Utilities for NAT (STUN) server. Implements [RFC5389](https://tools.ietf.org/html/rfc5389).
 
 ## Install
 
@@ -11,7 +11,7 @@ npm i stun
 ## Usage
 
 ```js
-const stun = require('../')
+const stun = require('stun')
 
 const { STUN_BINDING_REQUEST, STUN_ATTR_XOR_MAPPED_ADDRESS } = stun.constants
 
@@ -25,6 +25,7 @@ const remoteServer = {
 
 server.once('bindingResponse', stunMsg => {
   console.log('your ip:', stunMsg.getAttribute(STUN_ATTR_XOR_MAPPED_ADDRESS).value.address)
+
   server.close()
 })
 
@@ -32,6 +33,113 @@ server.send(request, remoteServer)
 ```
 
 ## API
+
+#### `createMessage(type): StunMessage`
+
+Creates an empty `StunMessage` object of the specified `type` with random `transaction` field. The `type` argument is a number that should be a message type. See `constants` below.
+
+#### `createServer([socket: dgram.Socket]): StunServer`
+
+Creates a `StunServer` object. An optional `socket` argument should be instance of `dgram.Socket`. If `socket` is not specifed, the `dgram.Socket` will be created with `udp4` type and will bound to the "all interfaces" address on a random port.
+
+#### `validateFingerprint(message: StunMessage): bool`
+
+Check a `FINGERPRINT` attribute if it is specifed.
+
+#### `validateMessageIntegrity(message: StunMessage, key: string): bool`
+
+Check a `MESSAGE_INTEGRITY` attribute if it is specifed.
+
+#### `class StunMessage`
+
+The `StunMessage` class is an utility that encapsulates the `STUN` protocol.
+
+Instances of the `StunMessage` class can be created using the `stun.createMessage()` function or the `StunMessage.from` method.
+
+* static `from(message: Buffer): StunMessage`
+
+Creates a `StunMessage` object from a `message` Buffer.
+
+* get `type`
+* get `transactionId`
+
+Returns the `type` and `transactionId` fields from the `stun` message.
+
+* `setType(type)`
+* `setTransactionID(transaction: Buffer): bool`
+* `isLegacy(): bool`
+* `addAttribute(type, ...args)`
+* `getAttribute(type): StunAttribute`
+* `removeAttribute(type)`
+* `addMessageIntegrity(key: string)`
+* `addFingerprint()`
+* `toBuffer(): Buffer`
+
+#### `StunServer`
+
+* `constructor([socket: dgram.Socket]): StunServer`
+* `process(message: StunMessage, rinfo: object)`
+* `send(message: StunMessage, port: number, address: string[, cb: function])`
+* `close()`
+* Event `bindingRequest`
+* Event `bindingIndication`
+* Event `bindingResponse`
+* Event `bindingError`
+* Event `close`
+
+#### `constants: object`
+
+These are the types of STUN messages defined in RFC 5389:
+
+* `STUN_BINDING_REQUEST`
+* `STUN_BINDING_INDICATION`
+* `STUN_BINDING_RESPONSE`
+* `STUN_BINDING_ERROR_RESPONSE`
+
+Thsese are all known STUN attributes, defined in RFC 5389 and elsewhere:
+
+* `STUN_ATTR_MAPPED_ADDRESS`
+* `STUN_ATTR_USERNAME`
+* `STUN_ATTR_MESSAGE_INTEGRITY`
+* `STUN_ATTR_ERROR_CODE`
+* `STUN_ATTR_UNKNOWN_ATTRIBUTES`
+* `STUN_ATTR_REALM`
+* `STUN_ATTR_NONCE`
+* `STUN_ATTR_XOR_MAPPED_ADDRESS`
+* `STUN_ATTR_SOFTWARE`
+* `STUN_ATTR_ALTERNATE_SERVER`
+* `STUN_ATTR_FINGERPRINT`
+* `STUN_ATTR_ORIGIN`
+* `STUN_ATTR_RETRANSMIT_COUNT`
+* `STUN_ATTR_PRIORITY`
+* `STUN_ATTR_USE_CANDIDATE`
+* `STUN_ATTR_ICE_CONTROLLED`
+* `STUN_ATTR_ICE_CONTROLLING`
+* `STUN_ATTR_NOMINATION`
+* `STUN_ATTR_NETWORK_INFO`
+
+These are the types of STUN error codes defined in RFC 5389 and 5245:
+
+* `STUN_CODE_TRY_ALTERNATE`
+* `STUN_CODE_BAD_REQUEST`
+* `STUN_CODE_UNAUTHORIZED`
+* `STUN_CODE_UNKNOWN_ATTRIBUTE`
+* `STUN_CODE_STALE_CREDENTIALS`
+* `STUN_CODE_STALE_NONCE`
+* `STUN_CODE_SERVER_ERROR`
+* `STUN_CODE_GLOBAL_FAILURE`
+* `STUN_CODE_ROLE_CONFLICT`
+
+These are the strings for the error codes above:
+
+* `STUN_REASON_TRY_ALTERNATE`
+* `STUN_REASON_BAD_REQUEST`
+* `STUN_REASON_UNAUTHORIZED`
+* `STUN_REASON_UNKNOWN_ATTRIBUTE`
+* `STUN_REASON_STALE_CREDENTIALS`
+* `STUN_REASON_STALE_NONCE`
+* `STUN_REASON_SERVER_ERROR`
+* `STUN_REASON_ROLE_CONFLICT`
 
 ## License
 
