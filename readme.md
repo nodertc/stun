@@ -56,31 +56,55 @@ The `StunMessage` class is an utility that encapsulates the `STUN` protocol.
 
 Instances of the `StunMessage` class can be created using the `stun.createMessage()` function or the `StunMessage.from` method.
 
-* static `from(message: Buffer): StunMessage`
+* **static `from(message: Buffer): StunMessage`**
 
 Creates a `StunMessage` object from a `message` Buffer.
 
-* get `type`
-* get `transactionId`
+* **get `type`**
+* **get `transactionId`**
 
-Returns the `type` and `transactionId` fields from the `stun` message.
+Returns the `type` and `transactionId` fields from the current message.
 
-* `setType(type)`
-* `setTransactionID(transaction: Buffer): bool`
-* `isLegacy(): bool`
+* **`setType(type)`**
+
+Set the type of the message. The `type` argument is a number that should be a message type. See `constants` below.
+
+* **`setTransactionID(transaction: Buffer): bool`**
+
+Set the transaction id of the message. The `transaction` argument should be a `Buffer` and have length 12 bytes.
+
+* **`isLegacy(): bool`**
+
+Returns true if the message confirms to RFC3489 rather than RFC5389.
+
 * `addAttribute(type, ...args)`
 * `getAttribute(type): StunAttribute`
-* `removeAttribute(type)`
-* `addMessageIntegrity(key: string)`
-* `addFingerprint()`
-* `toBuffer(): Buffer`
+
+* **`removeAttribute(type): bool`**
+
+Remove a `type` attribute from the current message. Returns true if an attribute was removed.
+
+* **`addMessageIntegrity(key: string)`**
+
+Adds a `MESSAGE-INTEGRITY` attribute that is valid for the current message. The `key` argument 
+
+* **`addFingerprint()`**
+
+Adds a `FINGERPRINT` attribute that is valid for the current message.
+
+* **`toBuffer(): Buffer`**
+
+Converts a `StunMessage` object to the buffer.
 
 #### `StunServer`
 
 * `constructor([socket: dgram.Socket]): StunServer`
 * `process(message: StunMessage, rinfo: object)`
 * `send(message: StunMessage, port: number, address: string[, cb: function])`
-* `close()`
+* **`close()`**
+
+Stops the processing of the incoming messages and emits `close` event.
+
 * Event `bindingRequest`
 * Event `bindingIndication`
 * Event `bindingResponse`
