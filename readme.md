@@ -36,7 +36,7 @@ server.send(request, remoteServer)
 
 #### `createMessage(type): StunMessage`
 
-Creates an empty `StunMessage` object of the specified `type` with random `transaction` field. The `type` argument is a number that should be a message type. See `constants` below.
+Creates an `StunMessage` object of the specified `type` with random `transaction` field. The `type` argument is a number that should be a message type. See `constants` below.
 
 #### `createServer([socket: dgram.Socket]): StunServer`
 
@@ -89,16 +89,57 @@ Set the transaction id of the message. The `transaction` argument should be a `B
 
 Returns true if the message confirms to RFC3489 rather than RFC5389.
 
-* `addAttribute(type, ...args)`
-* `getAttribute(type): StunAttribute`
+* **`addAttribute(type, address: string, port: number)`**
+
+Adds a `type` attribute to the current message. The `type` argument should be one of `MAPPED_ADDRESS`, `ALTERNATE_SERVER`, `ADDRESS`, `XOR_MAPPED_ADDRESS`.
+
+```js
+stunMsg.addAttribute(STUN_ATTR_XOR_MAPPED_ADDRESS, '8.8.8.8', 19302)
+```
+
+* **`addAttribute(type, value: String|Buffer[, encoding: string = 'utf8'])`**
+
+Adds a `type` attribute to the current message. The `type` argument should be one of `USERNAME`, `REALM`, `NONCE`, `SOFTWARE`, `ORIGIN`, `USE_CANDIDATE`, `ICE_CONTROLLED`, `ICE_CONTROLLING`.
+
+```js
+stunMsg.addAttribute(STUN_ATTR_SOFTWARE, 'node/8.2.0 stun/1.0.0')
+```
+
+* **`addAttribute(type, value: number)`**
+
+Adds a `type` attribute to the current message. The `type` argument should be one of `RETRANSMIT_COUNT`, `PRIORITY`, `NETWORK_INFO`, `NOMINATION`.
+
+```js
+stunMsg.addAttribute(STUN_ATTR_PRIORITY, 123)
+```
+
+* **`addAttribute(type, value: array<number>)`**
+
+Adds a `type` attribute to the current message. The `type` argument should be `UNKNOWN_ATTRIBUTES`.
+
+```js
+stunMsg.addAttribute(STUN_ATTR_UNKNOWN_ATTRIBUTES, [2, 3, 4])
+```
+
+* **`addAttribute(type, code: number, reason: string)`**
+
+Adds a `type` attribute to the current message. The `type` argument should be `ERROR_CODE`.
+
+```js
+stunMsg.addAttribute(STUN_ATTR_ERROR_CODE, STUN_CODE_UNAUTHORIZED, STUN_REASON_UNAUTHORIZED)
+```
+
+* **`getAttribute(type): StunAttribute`**
+
+Returns the `StunAttribute` attribute of the specified `type`. The `type` argument is a number that should be an attribute type. See `constants` below.
 
 * **`removeAttribute(type): bool`**
 
-Remove a `type` attribute from the current message. Returns true if an attribute was removed.
+Remove a `type` attribute from the current message. Returns true if an attribute was removed. The `type` argument is a number that should be an attribute type. See `constants` below.
 
 * **`addMessageIntegrity(key: string)`**
 
-Adds a `MESSAGE-INTEGRITY` attribute that is valid for the current message. The `key` argument
+Adds a `MESSAGE-INTEGRITY` attribute that is valid for the current message. The `key` is the HMAC key used to generate the cryptographic HMAC hash.
 
 * **`addFingerprint()`**
 
@@ -108,7 +149,7 @@ Adds a `FINGERPRINT` attribute that is valid for the current message.
 
 Converts a `StunMessage` object to the buffer.
 
-#### `StunServer`
+#### `class StunServer`
 
 The `StunServer` class is an EventEmitter that encapsulates a STUN server.
 
@@ -144,7 +185,25 @@ Emitted when the `STUN_BINDING_ERROR_RESPONSE` message is available on a socket.
 
 Emitted when the server closes.
 
-#### `constants: object`
+#### **`class StunAttribute`**
+
+The `StunAttribute` class is an utility for adding an attributes to the `StunMessage` message.
+
+* **get `type`**
+
+Returns the attribute type. See `constants` below.
+
+* **get `value`**
+
+Returns the value of the attribute. It depends on the value type of the attribute.
+
+```js
+stunMsg.getAttribute(STUN_ATTR_USERNAME).value        // string
+stunMsg.getAttribute(STUN_ATTR_PRIORITY).value        // number
+stunMsg.getAttribute(STUN_ATTR_MAPPED_ADDRESS).value  // object
+```
+
+#### **`constants: object`**
 
 These are the types of STUN messages defined in RFC 5389:
 
