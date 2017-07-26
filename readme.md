@@ -50,6 +50,18 @@ Check a `FINGERPRINT` attribute if it is specifed.
 
 Check a `MESSAGE_INTEGRITY` attribute if it is specifed.
 
+```js
+stunServer.on('bindingResponse', (stunMsg) => {
+  if (!stun.validateFingerprint(stunMsg)) {
+    // do stuff...
+  }
+
+  if (!stun.validateMessageIntegrity(stunMsg, icePassword)) {
+    // do stuff...
+  }
+})
+```
+
 #### `class StunMessage`
 
 The `StunMessage` class is an utility that encapsulates the `STUN` protocol.
@@ -86,7 +98,7 @@ Remove a `type` attribute from the current message. Returns true if an attribute
 
 * **`addMessageIntegrity(key: string)`**
 
-Adds a `MESSAGE-INTEGRITY` attribute that is valid for the current message. The `key` argument 
+Adds a `MESSAGE-INTEGRITY` attribute that is valid for the current message. The `key` argument
 
 * **`addFingerprint()`**
 
@@ -98,18 +110,39 @@ Converts a `StunMessage` object to the buffer.
 
 #### `StunServer`
 
-* `constructor([socket: dgram.Socket]): StunServer`
-* `process(message: StunMessage, rinfo: object)`
-* `send(message: StunMessage, port: number, address: string[, cb: function])`
+The `StunServer` class is an EventEmitter that encapsulates a STUN server.
+
+* **`new StunServer(socket: dgram.Socket)`**
+
+Creates a new `StunServer` object. The `socket` argument should be an instance of `dgram.Socket`. The incoming message is silently ignored when it is not a `stun` one.
+
+* **`send(message: StunMessage, port: number, address: string[, cb: function])`**
+
+Sends the `StunMessage` message on the socket. The destination `port` and `address` must be specified. An optional `callback` function will be called when the message has been sent.
+
 * **`close()`**
 
 Stops the processing of the incoming messages and emits `close` event.
 
-* Event `bindingRequest`
-* Event `bindingIndication`
-* Event `bindingResponse`
-* Event `bindingError`
-* Event `close`
+* **Event: `bindingRequest`**
+
+Emitted when the `STUN_BINDING_REQUEST` message is available on a socket.
+
+* **Event: `bindingIndication`**
+
+Emitted when the `STUN_BINDING_INDICATION` message is available on a socket.
+
+* **Event: `bindingResponse`**
+
+Emitted when the `STUN_BINDING_RESPONSE` message is available on a socket.
+
+* **Event: `bindingError`**
+
+Emitted when the `STUN_BINDING_ERROR_RESPONSE` message is available on a socket.
+
+* **Event: `close`**
+
+Emitted when the server closes.
 
 #### `constants: object`
 
