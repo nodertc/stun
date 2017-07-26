@@ -30,3 +30,15 @@ test('decode', () => {
 
   expect(attr.value).toEqual([1, 2, 3])
 })
+
+test('encode # constructor', () => {
+  const attr = new StunUInt16ListAttribute(type, [1, 2, 3])
+
+  const expectedBuffer = Buffer.from([
+    0, 0x1,
+    0, 0x2,
+    0, 0x3
+  ])
+
+  expect(attr.toBuffer()).toEqual(expectedBuffer)
+})
