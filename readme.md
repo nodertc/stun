@@ -91,7 +91,7 @@ Returns true if the message confirms to RFC3489 rather than RFC5389.
 
 * **`addAttribute(type, address: string, port: number)`**
 
-Adds a `type` attribute to the current message. The `type` argument should be one of `MAPPED_ADDRESS`, `ALTERNATE_SERVER`, `ADDRESS`, `XOR_MAPPED_ADDRESS`.
+Adds a `type` attribute to the current message. The `type` argument should be one of `STUN_ATTR_MAPPED_ADDRESS`, `STUN_ATTR_ALTERNATE_SERVER`, `STUN_ATTR_XOR_MAPPED_ADDRESS`.
 
 ```js
 stunMsg.addAttribute(STUN_ATTR_XOR_MAPPED_ADDRESS, '8.8.8.8', 19302)
@@ -99,7 +99,7 @@ stunMsg.addAttribute(STUN_ATTR_XOR_MAPPED_ADDRESS, '8.8.8.8', 19302)
 
 * **`addAttribute(type, value: String|Buffer[, encoding: string = 'utf8'])`**
 
-Adds a `type` attribute to the current message. The `type` argument should be one of `USERNAME`, `REALM`, `NONCE`, `SOFTWARE`, `ORIGIN`, `USE_CANDIDATE`, `ICE_CONTROLLED`, `ICE_CONTROLLING`.
+Adds a `type` attribute to the current message. The `type` argument should be one of `STUN_ATTR_USERNAME`, `STUN_ATTR_REALM`, `STUN_ATTR_NONCE`, `STUN_ATTR_SOFTWARE`, `STUN_ATTR_ORIGIN`, `STUN_ATTR_USE_CANDIDATE`, `STUN_ATTR_ICE_CONTROLLED`, `STUN_ATTR_ICE_CONTROLLING`.
 
 ```js
 stunMsg.addAttribute(STUN_ATTR_SOFTWARE, 'node/8.2.0 stun/1.0.0')
@@ -107,7 +107,7 @@ stunMsg.addAttribute(STUN_ATTR_SOFTWARE, 'node/8.2.0 stun/1.0.0')
 
 * **`addAttribute(type, value: number)`**
 
-Adds a `type` attribute to the current message. The `type` argument should be one of `RETRANSMIT_COUNT`, `PRIORITY`, `NETWORK_INFO`, `NOMINATION`.
+Adds a `type` attribute to the current message. The `type` argument should be one of `STUN_ATTR_RETRANSMIT_COUNT`, `STUN_ATTR_PRIORITY`, `STUN_ATTR_NETWORK_INFO`, `STUN_ATTR_NOMINATION`.
 
 ```js
 stunMsg.addAttribute(STUN_ATTR_PRIORITY, 123)
@@ -115,7 +115,7 @@ stunMsg.addAttribute(STUN_ATTR_PRIORITY, 123)
 
 * **`addAttribute(type, value: array<number>)`**
 
-Adds a `type` attribute to the current message. The `type` argument should be `UNKNOWN_ATTRIBUTES`.
+Adds a `type` attribute to the current message. The `type` argument should be `STUN_ATTR_UNKNOWN_ATTRIBUTES`.
 
 ```js
 stunMsg.addAttribute(STUN_ATTR_UNKNOWN_ATTRIBUTES, [2, 3, 4])
@@ -123,7 +123,7 @@ stunMsg.addAttribute(STUN_ATTR_UNKNOWN_ATTRIBUTES, [2, 3, 4])
 
 * **`addAttribute(type, code: number, reason: string)`**
 
-Adds a `type` attribute to the current message. The `type` argument should be `ERROR_CODE`.
+Adds a `type` attribute to the current message. The `type` argument should be `STUN_ATTR_ERROR_CODE`.
 
 ```js
 stunMsg.addAttribute(STUN_ATTR_ERROR_CODE, STUN_CODE_UNAUTHORIZED, STUN_REASON_UNAUTHORIZED)
