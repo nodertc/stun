@@ -1,12 +1,11 @@
 # stun
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/reklatsmasters/stun.svg)](https://greenkeeper.io/)
-
 [![Build Status](https://travis-ci.org/reklatsmasters/stun.svg?branch=master)](https://travis-ci.org/reklatsmasters/stun)
 [![npm](https://img.shields.io/npm/v/stun.svg)](https://npmjs.org/package/stun)
 [![node](https://img.shields.io/node/v/stun.svg)](https://npmjs.org/package/stun)
 [![license](https://img.shields.io/npm/l/stun.svg)](https://npmjs.org/package/stun)
 [![downloads](https://img.shields.io/npm/dm/stun.svg)](https://npmjs.org/package/stun)
+[![Greenkeeper badge](https://badges.greenkeeper.io/reklatsmasters/stun.svg)](https://greenkeeper.io/)
 
 Session Traversal Utilities for NAT (STUN) server. Implements [RFC5389](https://tools.ietf.org/html/rfc5389).
 
