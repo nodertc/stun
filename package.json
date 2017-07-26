@@ -1,7 +1,7 @@
 {
   "name": "stun",
   "version": "0.0.0",
-  "description": "Session Traversal Utilities for NAT (STUN) client / server.",
+  "description": "Session Traversal Utilities for NAT (STUN) server.",
   "main": "index.js",
   "scripts": {
     "test": "xo && jest"
@@ -14,7 +14,9 @@
     "webrtc",
     "stun",
     "rfc5389",
-    "5389"
+    "5389",
+    "ice",
+    "turn"
   ],
   "author": "Dmitry Tsvettsikh <me@reklatsmasters.com>",
   "license": "MIT",
