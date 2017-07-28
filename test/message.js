@@ -55,6 +55,35 @@ test('decode', () => {
   })
 })
 
+test('decode unknown attributes', () => {
+  const packet = Buffer.from([
+    0, 0x01,  /* Type */
+    0, 12, /* Length */
+    0x21, 0x12, 0xA4, 0x42, /* Cookie */
+    0xD0, 0x05, 0x58, 0x70, 0x7B, 0xB8, 0xCC, 0x6A, 0x63, 0x3A, 0x9D, 0xF7, /* Transaction */
+
+    0x88, 0x88, /* should be an unknown attribute */
+    0, 8,
+    0,
+    0x1,
+    0xD9, 0x36,
+    0xE1, 0xBA, 0xA5, 0x61
+  ])
+
+  expect(() => StunMessage.from(packet)).not.toThrow()
+
+  const stunMsg = StunMessage.from(packet)
+  const attr = stunMsg.getAttribute(0x8888)
+
+  expect(attr.valueType).toBe(constants.attributeValueType.UNKNOWN)
+  expect(attr.value).toEqual(Buffer.from([
+    0,
+    0x1,
+    0xD9, 0x36,
+    0xE1, 0xBA, 0xA5, 0x61
+  ]))
+})
+
 test('add FINGERPRINT', () => {
   const expectedBuffer = Buffer.from(
     '0101002c2112a442644d4f37326c71514d4f4a51' +
