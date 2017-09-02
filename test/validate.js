@@ -1,5 +1,6 @@
 const { validateFingerprint, validateMessageIntegrity } = require('lib/validate')
 const StunMessage = require('lib/message')
+const constants = require('lib/constants')
 
 test('validate fingerprint', () => {
   const packet = Buffer.from(
@@ -9,6 +10,17 @@ test('validate fingerprint', () => {
   )
 
   const msg = StunMessage.from(packet)
+
+  expect(validateFingerprint(msg)).toBe(true)
+})
+
+test('`validateFingerprint` should support uint32 value', () => {
+  const { SOFTWARE } = constants.attributeType
+  const msg = new StunMessage()
+
+  msg.setType(constants.messageType.BINDING_RESPONSE)
+  msg.addAttribute(SOFTWARE, '123456789')
+  msg.addFingerprint()
 
   expect(validateFingerprint(msg)).toBe(true)
 })
