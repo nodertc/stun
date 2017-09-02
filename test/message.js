@@ -125,3 +125,13 @@ test('add MESSAGE-INTEGRITY', () => {
   expect(msg.addMessageIntegrity(password)).toBe(true)
   expect(msg.toBuffer()).toEqual(expectedBuffer)
 })
+
+test('FINGERPRINT should be uint32', () => {
+  const { SOFTWARE } = constants.attributeType
+  const msg = new StunMessage()
+
+  msg.setType(constants.messageType.BINDING_RESPONSE)
+  msg.addAttribute(SOFTWARE, '123456789')
+
+  expect(msg.addFingerprint()).toBe(true)
+})
