@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/reklatsmasters/stun#readme",
   "devDependencies": {
-    "jest": "^20.0.4",
+    "jest": "^21.0.0",
     "xo": "^0.18.2"
   },
   "dependencies": {
