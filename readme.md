@@ -139,6 +139,10 @@ Returns the `StunAttribute` attribute of the specified `type`. The `type` argume
 
 Remove a `type` attribute from the current message. Returns true if an attribute was removed. The `type` argument is a number that should be an attribute type. See `constants` below.
 
+* **get `count: number`**
+
+Returns the number of an attributes in the current message.
+
 * **`addMessageIntegrity(key: string)`**
 
 Adds a `MESSAGE-INTEGRITY` attribute that is valid for the current message. The `key` is the HMAC key used to generate the cryptographic HMAC hash.
