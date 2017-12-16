@@ -1,5 +1,6 @@
 const constants = require('lib/constants')
 const StunMessage = require('lib/message')
+const StunAttribute = require('lib/attr/stun-attribute')
 
 test('encode', () => {
   const msg = new StunMessage()
@@ -134,4 +135,38 @@ test('FINGERPRINT should be uint32', () => {
   msg.addAttribute(SOFTWARE, '123456789')
 
   expect(msg.addFingerprint()).toBe(true)
+})
+
+test('iterator', () => {
+  const { BINDING_RESPONSE } = constants.messageType
+  const { SOFTWARE, XOR_MAPPED_ADDRESS, FINGERPRINT } = constants.attributeType
+  const message = new StunMessage()
+
+  message.setType(BINDING_RESPONSE)
+
+  message.addAttribute(SOFTWARE, 'node/v8.9.3')
+  message.addAttribute(XOR_MAPPED_ADDRESS, '192.168.1.35', 60689)
+  message.addFingerprint()
+
+  let count = 0
+  for(const attribute of message) {
+    ++count
+
+    expect(attribute instanceof StunAttribute).toBe(true)
+
+    switch(count) {
+      case 1:
+        expect(attribute.type).toBe(SOFTWARE)
+        break
+      case 2:
+        expect(attribute.type).toBe(XOR_MAPPED_ADDRESS)
+        break
+      case 3:
+        expect(attribute.type).toBe(FINGERPRINT)
+        break
+      default:
+        expect(count).toEqual(3)
+        break
+    }
+  }
 })
