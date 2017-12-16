@@ -45,7 +45,7 @@ test('decode', () => {
 
   expect(stunMsg.type).toBe(constants.messageType.BINDING_REQUEST)
   expect(stunMsg.transactionId).toEqual(Buffer.from('d00558707bb8cc6a633a9df7', 'hex'))
-  expect(stunMsg._attrs.length).toBe(1)
+  expect(stunMsg.count).toBe(1)
 
   const xorAddress = stunMsg.getAttribute(constants.attributeType.XOR_MAPPED_ADDRESS)
   expect(xorAddress.type).toBe(constants.attributeType.XOR_MAPPED_ADDRESS)
@@ -148,6 +148,8 @@ test('iterator', () => {
   message.addAttribute(XOR_MAPPED_ADDRESS, '192.168.1.35', 60689)
   message.addFingerprint()
 
+  expect(message.count).toBe(3)
+
   let count = 0
   for(const attribute of message) {
     ++count
@@ -165,7 +167,7 @@ test('iterator', () => {
         expect(attribute.type).toBe(FINGERPRINT)
         break
       default:
-        expect(count).toEqual(3)
+        expect(count).toBe(3)
         break
     }
   }
