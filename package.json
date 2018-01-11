@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reklatsmasters/stun.git"
+    "url": "git+https://github.com/nodertc/stun.git"
   },
   "keywords": [
     "webrtc",
@@ -21,9 +21,9 @@
   "author": "Dmitry Tsvettsikh <me@reklatsmasters.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/reklatsmasters/stun/issues"
+    "url": "https://github.com/nodertc/stun/issues"
   },
-  "homepage": "https://github.com/reklatsmasters/stun#readme",
+  "homepage": "https://github.com/nodertc/stun#readme",
   "devDependencies": {
     "jest": "^21.0.0",
     "xo": "^0.18.2"
