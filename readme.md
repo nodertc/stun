@@ -151,7 +151,14 @@ Returns true if the message confirms to RFC3489 rather than RFC5389.
 
 * **`addAttribute(type, address: string, port: number)`**
 
-Adds a `type` attribute to the current message. The `type` argument should be one of `STUN_ATTR_MAPPED_ADDRESS`, `STUN_ATTR_ALTERNATE_SERVER`, `STUN_ATTR_XOR_MAPPED_ADDRESS`.
+Adds a `type` attribute to the current message. The `type` argument should be one of:
+  * `STUN_ATTR_MAPPED_ADDRESS`
+  * `STUN_ATTR_ALTERNATE_SERVER`
+  * `STUN_ATTR_XOR_MAPPED_ADDRESS`
+  * `STUN_ATTR_RESPONSE_ORIGIN`
+  * `STUN_ATTR_OTHER_ADDRESS`
+  * `STUN_ATTR_XOR_PEER_ADDRESS`
+  * `STUN_ATTR_XOR_RELAYED_ADDRESS`.
 
 ```js
 stunMsg.addAttribute(STUN_ATTR_XOR_MAPPED_ADDRESS, '8.8.8.8', 19302)
@@ -161,7 +168,20 @@ stunMsg.addAttribute(STUN_ATTR_XOR_MAPPED_ADDRESS, '8.8.8.8', 19302)
 
 * **`addAttribute(type, value: String|Buffer[, encoding: string = 'utf8'])`**
 
-Adds a `type` attribute to the current message. The `type` argument should be one of `STUN_ATTR_USERNAME`, `STUN_ATTR_REALM`, `STUN_ATTR_NONCE`, `STUN_ATTR_SOFTWARE`, `STUN_ATTR_ORIGIN`, `STUN_ATTR_USE_CANDIDATE`, `STUN_ATTR_ICE_CONTROLLED`, `STUN_ATTR_ICE_CONTROLLING`.
+Adds a `type` attribute to the current message. The `type` argument should be one of:
+  * `STUN_ATTR_USERNAME`
+  * `STUN_ATTR_REALM`
+  * `STUN_ATTR_NONCE`
+  * `STUN_ATTR_SOFTWARE`
+  * `STUN_ATTR_ORIGIN`
+  * `STUN_ATTR_USE_CANDIDATE`
+  * `STUN_ATTR_ICE_CONTROLLED`
+  * `STUN_ATTR_ICE_CONTROLLING`
+  * `STUN_ATTR_DATA`
+  * `STUN_ATTR_EVEN_PORT`
+  * `STUN_ATTR_RESERVATION_TOKEN`
+  * `STUN_ATTR_DONT_FRAGMENT`
+  * `STUN_ATTR_PADDING`.
 
 ```js
 stunMsg.addAttribute(STUN_ATTR_SOFTWARE, 'node/8.2.0 stun/1.0.0')
@@ -171,7 +191,16 @@ stunMsg.addAttribute(STUN_ATTR_SOFTWARE, 'node/8.2.0 stun/1.0.0')
 
 * **`addAttribute(type, value: number)`**
 
-Adds a `type` attribute to the current message. The `type` argument should be one of `STUN_ATTR_RETRANSMIT_COUNT`, `STUN_ATTR_PRIORITY`, `STUN_ATTR_NETWORK_INFO`, `STUN_ATTR_NOMINATION`.
+Adds a `type` attribute to the current message. The `type` argument should be one of:
+  * `STUN_ATTR_RETRANSMIT_COUNT`
+  * `STUN_ATTR_PRIORITY`
+  * `STUN_ATTR_NETWORK_INFO`
+  * `STUN_ATTR_NOMINATION`
+  * `STUN_ATTR_CHANNEL_NUMBER`
+  * `STUN_ATTR_LIFETIME`
+  * `STUN_ATTR_REQUESTED_TRANSPORT`
+  * `STUN_ATTR_CHANGE_REQUEST`
+  * `STUN_ATTR_RESPONSE_PORT`.
 
 ```js
 stunMsg.addAttribute(STUN_ATTR_PRIORITY, 123)
@@ -343,6 +372,20 @@ Thsese are all known STUN attributes, defined in RFC 5389 and elsewhere:
 * `STUN_ATTR_ICE_CONTROLLING`
 * `STUN_ATTR_NOMINATION`
 * `STUN_ATTR_NETWORK_INFO`
+* `STUN_ATTR_CHANNEL_NUMBER`
+* `STUN_ATTR_LIFETIME`
+* `STUN_ATTR_XOR_PEER_ADDRESS`
+* `STUN_ATTR_DATA`
+* `STUN_ATTR_XOR_RELAYED_ADDRESS`
+* `STUN_ATTR_EVEN_PORT`
+* `STUN_ATTR_REQUESTED_TRANSPORT`
+* `STUN_ATTR_DONT_FRAGMENT`
+* `STUN_ATTR_RESERVATION_TOKEN`
+* `STUN_ATTR_CHANGE_REQUEST`
+* `STUN_ATTR_PADDING`
+* `STUN_ATTR_RESPONSE_PORT`
+* `STUN_ATTR_RESPONSE_ORIGIN`
+* `STUN_ATTR_OTHER_ADDRESS`
 
 These are the types of STUN error codes defined in RFC 5389 and 5245:
 
@@ -355,6 +398,12 @@ These are the types of STUN error codes defined in RFC 5389 and 5245:
 * `STUN_CODE_SERVER_ERROR`
 * `STUN_CODE_GLOBAL_FAILURE`
 * `STUN_CODE_ROLE_CONFLICT`
+* `STUN_CODE_FORBIDDEN`
+* `STUN_CODE_ALLOCATION_MISMATCH`
+* `STUN_CODE_WRONG_CREDENTIALS`
+* `STUN_CODE_UNSUPPORTED_PROTOCOL`
+* `STUN_CODE_ALLOCATION_QUOTA`
+* `STUN_CODE_INSUFFICIENT_CAPACITY`
 
 These are the strings for the error codes above:
 
@@ -366,6 +415,12 @@ These are the strings for the error codes above:
 * `STUN_REASON_STALE_NONCE`
 * `STUN_REASON_SERVER_ERROR`
 * `STUN_REASON_ROLE_CONFLICT`
+* `STUN_REASON_FORBIDDEN`
+* `STUN_REASON_ALLOCATION_MISMATCH`
+* `STUN_REASON_WRONG_CREDENTIALS`
+* `STUN_REASON_UNSUPPORTED_PROTOCOL`
+* `STUN_REASON_ALLOCATION_QUOTA`
+* `STUN_REASON_INSUFFICIENT_CAPACITY`
 
 ## License
 
