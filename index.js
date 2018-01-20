@@ -17,6 +17,13 @@ module.exports = {
   constants
 }
 
+/**
+ * Creates a new STUN message.
+ *
+ * @param {number} type - message type (see constants).
+ * @param {Buffer} [transaction] - message `transaction` field, random by default.
+ * @return {StunMessage}
+ */
 function createMessage(type, transaction) {
   const msg = new StunMessage()
 
@@ -31,6 +38,12 @@ function createMessage(type, transaction) {
   return msg
 }
 
+/**
+ * Creates a new STUN server.
+ *
+ * @param {dgram.Socket} [socket] - optional udp socket.
+ * @return {StunServer}
+ */
 function createServer(socket) {
   let isExternalSocket = true
 
