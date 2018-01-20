@@ -11,6 +11,8 @@ function createMessage() {
   return message
 }
 
+// RFC5766
+
 test('support CHANNEL_NUMBER attribute', () => {
   const message = createMessage()
   const attribute = message.addAttribute(attributeType.CHANNEL_NUMBER, 1)
@@ -72,4 +74,41 @@ test('support RESERVATION_TOKEN attribute', () => {
   const attribute = message.addAttribute(attributeType.RESERVATION_TOKEN)
 
   expect(attribute.valueType).toEqual(attributeValueType.BYTE_STRING)
+})
+
+// RFC5780
+
+test('support CHANGE_REQUEST attribute', () => {
+  const message = createMessage()
+  const attribute = message.addAttribute(attributeType.CHANGE_REQUEST)
+
+  expect(attribute.valueType).toEqual(attributeValueType.UINT32)
+})
+
+test('support PADDING attribute', () => {
+  const message = createMessage()
+  const attribute = message.addAttribute(attributeType.PADDING)
+
+  expect(attribute.valueType).toEqual(attributeValueType.BYTE_STRING)
+})
+
+test('support RESPONSE_PORT attribute', () => {
+  const message = createMessage()
+  const attribute = message.addAttribute(attributeType.RESPONSE_PORT)
+
+  expect(attribute.valueType).toEqual(attributeValueType.UINT16)
+})
+
+test('support RESPONSE_ORIGIN attribute', () => {
+  const message = createMessage()
+  const attribute = message.addAttribute(attributeType.RESPONSE_ORIGIN, '127.0.0.1', 1234)
+
+  expect(attribute.valueType).toEqual(attributeValueType.ADDRESS)
+})
+
+test('support OTHER_ADDRESS attribute', () => {
+  const message = createMessage()
+  const attribute = message.addAttribute(attributeType.OTHER_ADDRESS, '127.0.0.1', 1234)
+
+  expect(attribute.valueType).toEqual(attributeValueType.ADDRESS)
 })
