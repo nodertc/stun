@@ -33,7 +33,7 @@
     "buffer-xor": "^2.0.1",
     "crc": "^3.4.4",
     "ipaddr.js": "^1.4.0",
-    "is-stun": "^1.0.0"
+    "is-stun": "^2.0.0"
   },
   "engines": {
     "node": ">=6"
