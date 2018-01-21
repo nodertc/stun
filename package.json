@@ -4,7 +4,10 @@
   "description": "Session Traversal Utilities for NAT (STUN) server.",
   "main": "index.js",
   "scripts": {
-    "test": "xo && jest"
+    "lint": "xo",
+    "cover": "jest --coverage",
+    "test": "npm run lint && jest",
+    "test-ci": "npm run lint && npm run cover"
   },
   "repository": {
     "type": "git",
