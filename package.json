@@ -35,7 +35,7 @@
     "binary-data": "^0.2.0",
     "buffer-xor": "^2.0.1",
     "crc": "^3.4.4",
-    "ipaddr.js": "^1.4.0",
+    "ip": "^1.1.5",
     "is-stun": "^2.0.0"
   },
   "engines": {
