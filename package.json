@@ -2,7 +2,7 @@
   "name": "stun",
   "version": "1.1.0",
   "description": "Session Traversal Utilities for NAT (STUN) server.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "lint": "xo",
     "cover": "jest --coverage",
@@ -48,7 +48,8 @@
       "object-curly-spacing": [
         "error",
         "always"
-      ]
+      ],
+      "import/no-extraneous-dependencies": "off"
     },
     "ignores": [
       "**/test/**"
@@ -56,7 +57,8 @@
   },
   "jest": {
     "modulePaths": [
-      "<rootDir>"
+      "<rootDir>",
+      "<rootDir>/src/node_modules"
     ],
     "testRegex": "test/(.*)\\.js$",
     "coverageDirectory": "<rootDir>/coverage",

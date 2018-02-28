@@ -1,5 +1,5 @@
 const constants = require('lib/constants')
-const StunUInt32Attribute = require('lib/attr/stun-uint32-attribute')
+const StunUInt32Attribute = require('attributes/stun-uint32-attribute')
 
 const type = constants.attributeType.FINGERPRINT
 

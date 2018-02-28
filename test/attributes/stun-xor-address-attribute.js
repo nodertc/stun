@@ -1,4 +1,4 @@
-const StunXorAddressAttribute = require('lib/attr/stun-xor-address-attribute')
+const StunXorAddressAttribute = require('attributes/stun-xor-address-attribute')
 const constants = require('lib/constants')
 
 const type = constants.attributeType.XOR_MAPPED_ADDRESS

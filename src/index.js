@@ -1,9 +1,9 @@
 const crypto = require('crypto')
 const dgram = require('dgram')
-const StunMessage = require('./lib/message')
-const StunServer = require('./lib/server')
-const defaultConstants = require('./lib/constants')
-const { validateFingerprint, validateMessageIntegrity } = require('./lib/validate')
+const StunMessage = require('lib/message')
+const StunServer = require('lib/server')
+const defaultConstants = require('lib/constants')
+const { validateFingerprint, validateMessageIntegrity } = require('lib/validate')
 
 const constants = {}
 

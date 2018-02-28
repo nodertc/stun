@@ -1,5 +1,5 @@
 const constants = require('lib/constants')
-const StunByteStringAttribute = require('lib/attr/stun-bytestring-attribute')
+const StunByteStringAttribute = require('attributes/stun-bytestring-attribute')
 
 const type = constants.attributeType.USERNAME
 

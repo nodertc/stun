@@ -1,4 +1,4 @@
-const StunUInt16ListAttribute = require('lib/attr/stun-uint16list-attribute')
+const StunUInt16ListAttribute = require('attributes/stun-uint16list-attribute')
 const constants = require('lib/constants')
 
 const type = constants.attributeType.UNKNOWN_ATTRIBUTES

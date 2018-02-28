@@ -1,4 +1,4 @@
-const StunAddressAttribute = require('lib/attr/stun-address-attribute')
+const StunAddressAttribute = require('attributes/stun-address-attribute')
 const constants = require('lib/constants')
 
 const type = constants.attributeType.MAPPED_ADDRESS

@@ -1,5 +1,5 @@
 const { attributeType } = require('lib/constants')
-const StunUInt16Attribute = require('lib/attr/stun-uint16-attribute')
+const StunUInt16Attribute = require('attributes/stun-uint16-attribute')
 
 const type = attributeType.RESPONSE_PORT
 

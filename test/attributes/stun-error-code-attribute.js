@@ -1,4 +1,4 @@
-const StunErrorCodeAttribute = require('lib/attr/stun-error-code-attribute')
+const StunErrorCodeAttribute = require('attributes/stun-error-code-attribute')
 const constants = require('lib/constants')
 
 const type = constants.attributeType.ERROR_CODE

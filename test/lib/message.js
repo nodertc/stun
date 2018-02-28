@@ -1,6 +1,6 @@
 const constants = require('lib/constants')
 const StunMessage = require('lib/message')
-const StunAttribute = require('lib/attr/stun-attribute')
+const StunAttribute = require('attributes/stun-attribute')
 
 test('encode', () => {
   const msg = new StunMessage()

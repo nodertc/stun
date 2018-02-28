@@ -1,4 +1,4 @@
-const { messageType } = require('../lib/constants')
+const { messageType } = require('lib/constants')
 
 test('rfc5766 message types', () => {
   // These constants taken from webrtc source code at
