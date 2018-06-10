@@ -1,5 +1,5 @@
 const dgram = require('dgram')
-const stun = require('../')
+const stun = require('..')
 
 const socket = dgram.createSocket('udp4')
 const server = stun.createServer(socket)

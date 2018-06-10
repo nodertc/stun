@@ -17,5 +17,5 @@ test('createMessageType', () => {
   expect(createMessageType(0b11111, classType.ERROR)).toBe(0b100111111)
 
   // Bits 7 - 11.
-  expect(createMessageType(0x02ff, classType.ERROR)).toBe(0b101111111111)
+  expect(createMessageType(0x02FF, classType.ERROR)).toBe(0b101111111111)
 })

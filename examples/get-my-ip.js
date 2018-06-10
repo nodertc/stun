@@ -1,4 +1,4 @@
-const stun = require('../')
+const stun = require('..')
 
 const { STUN_BINDING_REQUEST, STUN_ATTR_XOR_MAPPED_ADDRESS } = stun.constants
 

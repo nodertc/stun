@@ -8,10 +8,10 @@ test('encode', () => {
 
   const buf = attr.toBuffer()
   const expectedBuffer = Buffer.from([
-    0, /* reserved */
-    0x1, /* family */
-    0xF8, 0x24, /* port */
-    0xC0, 0xA8, 1, 2 /* ip */
+    0, /* Reserved */
+    0x1, /* Family */
+    0xF8, 0x24, /* Port */
+    0xC0, 0xA8, 1, 2 /* IP */
   ])
 
   expect(buf).toEqual(expectedBuffer)
@@ -19,14 +19,13 @@ test('encode', () => {
 
 test('decode', () => {
   const packet = Buffer.from([
-    0, /* reserved */
-    0x1, /* family */
-    0xF8, 0x24, /* port */
-    0xC0, 0xA8, 1, 2 /* ip */
+    0, /* Reserved */
+    0x1, /* Family */
+    0xF8, 0x24, /* Port */
+    0xC0, 0xA8, 1, 2 /* IP */
   ])
 
-  const attr = StunAddressAttribute.from(type, packet)
-  const value = attr.value
+  const { value } = StunAddressAttribute.from(type, packet)
 
   const expectedPort = 63524
   const expectedAddress = '192.168.1.2'

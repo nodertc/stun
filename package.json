@@ -4,7 +4,9 @@
   "description": "Session Traversal Utilities for NAT (STUN) server.",
   "main": "src/index.js",
   "scripts": {
-    "lint": "xo",
+    "lint": "npm run lint-public && npm run lint-internal",
+    "lint-public": "npx xo",
+    "lint-internal": "for file in $(find $PWD/src/node_modules -name '*.js'); do cat $file | npx xo --stdin --stdin-filename=$file --cwd=$PWD/src/node_modules || exit $?; done",
     "cover": "jest --coverage",
     "test": "npm run lint && jest",
     "test-ci": "npm run lint && npm run cover"
@@ -29,7 +31,7 @@
   "homepage": "https://github.com/nodertc/stun#readme",
   "devDependencies": {
     "jest": "^21.0.0",
-    "xo": "^0.18.2"
+    "xo": "^0.21.1"
   },
   "dependencies": {
     "binary-data": "^0.2.0",
@@ -51,8 +53,14 @@
       ],
       "import/no-extraneous-dependencies": "off"
     },
-    "ignores": [
-      "**/test/**"
+    "overrides": [
+      {
+        "files": "test/**/*.js",
+        "envs": ["jest"],
+        "rules": {
+          "import/no-unresolved": "off"
+        }
+      }
     ]
   },
   "jest": {

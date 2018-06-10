@@ -1,5 +1,4 @@
 const { attributeType, messageType, attributeValueType } = require('lib/constants')
-const StunAttribute = require('attributes/stun-attribute')
 const StunMessage = require('lib/message')
 
 function createMessage() {
