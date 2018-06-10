@@ -7,7 +7,6 @@
 [![downloads](https://img.shields.io/npm/dm/stun.svg)](https://npmjs.org/package/stun)
 [![Coverage Status](https://coveralls.io/repos/github/nodertc/stun/badge.svg?branch=master)](https://coveralls.io/github/nodertc/stun?branch=master)
 [![code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
-[![Greenkeeper badge](https://badges.greenkeeper.io/reklatsmasters/stun.svg)](https://greenkeeper.io/)
 
 Session Traversal Utilities for NAT (STUN) server. Implements [RFC5389](https://tools.ietf.org/html/rfc5389) with partial support [RFC5766](https://tools.ietf.org/html/rfc5766), [RFC5245](https://tools.ietf.org/html/rfc5245), [RFC5780](https://tools.ietf.org/html/rfc5780).
 
@@ -346,14 +345,31 @@ stunMsg.getAttribute(STUN_ATTR_MAPPED_ADDRESS).value  // object
 
 #### **`constants: object`**
 
-These are the types of STUN messages defined in RFC 5389:
+These are the types of STUN messages defined in [RFC5389](https://tools.ietf.org/html/rfc5389):
 
 * `STUN_BINDING_REQUEST`
 * `STUN_BINDING_INDICATION`
 * `STUN_BINDING_RESPONSE`
 * `STUN_BINDING_ERROR_RESPONSE`
 
-Thsese are all known STUN attributes, defined in RFC 5389 and elsewhere:
+These are the types of STUN messages defined in [RFC5766](https://tools.ietf.org/html/rfc5766):
+
+* `STUN_ALLOCATE_REQUEST`
+* `STUN_ALLOCATE_RESPONSE`
+* `STUN_ALLOCATE_ERROR_RESPONSE`
+* `STUN_REFRESH_REQUEST`
+* `STUN_REFRESH_RESPONSE`
+* `STUN_REFRESH_ERROR_RESPONSE`
+* `STUN_SEND_INDICATION`
+* `STUN_DATA_INDICATION`
+* `STUN_CREATE_PERMISSION_REQUEST`
+* `STUN_CREATE_PERMISSION_RESPONSE`
+* `STUN_CREATE_PERMISSION_ERROR_RESPONSE`
+* `STUN_CHANNEL_BIND_REQUEST`
+* `STUN_CHANNEL_BIND_RESPONSE`
+* `STUN_CHANNEL_BIND_ERROR_RESPONSE`
+
+Thsese are all known STUN attributes, defined in [RFC5389](https://tools.ietf.org/html/rfc5389) and elsewhere:
 
 * `STUN_ATTR_MAPPED_ADDRESS`
 * `STUN_ATTR_USERNAME`
@@ -389,7 +405,7 @@ Thsese are all known STUN attributes, defined in RFC 5389 and elsewhere:
 * `STUN_ATTR_RESPONSE_ORIGIN`
 * `STUN_ATTR_OTHER_ADDRESS`
 
-These are the types of STUN error codes defined in RFC 5389 and 5245:
+These are the types of STUN error codes defined in [RFC5389](https://tools.ietf.org/html/rfc5389) and elsewhere:
 
 * `STUN_CODE_TRY_ALTERNATE`
 * `STUN_CODE_BAD_REQUEST`
