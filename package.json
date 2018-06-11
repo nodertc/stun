@@ -30,13 +30,13 @@
   },
   "homepage": "https://github.com/nodertc/stun#readme",
   "devDependencies": {
-    "jest": "^21.0.0",
+    "jest": "^23.1.0",
     "xo": "^0.21.1"
   },
   "dependencies": {
-    "binary-data": "^0.2.0",
-    "buffer-xor": "^2.0.1",
-    "crc": "^3.4.4",
+    "binary-data": "^0.5.0-0",
+    "buffer-xor": "^2.0.2",
+    "crc": "^3.5.0",
     "ip": "^1.1.5",
     "is-stun": "^2.0.0"
   },
@@ -56,7 +56,9 @@
     "overrides": [
       {
         "files": "test/**/*.js",
-        "envs": ["jest"],
+        "envs": [
+          "jest"
+        ],
         "rules": {
           "import/no-unresolved": "off"
         }
