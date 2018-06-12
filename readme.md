@@ -68,6 +68,7 @@ server.send(request, 19302, 'stun.l.google.com')
   * [`Event: bindingResponse`](#class-stun-server-event-binding-response)
   * [`Event: bindingError`](#class-stun-server-event-binding-error)
   * [`Event: close`](#class-stun-server-event-close)
+  * [`Event: error`](#class-stun-server-event-error)
 * [`class StunAttribute`](#class-stun-attribute)
   * [`get type`](#class-stun-attribute-get-type)
   * [`get value`](#class-stun-attribute-get-value)
@@ -316,6 +317,12 @@ Emitted when the `STUN_BINDING_ERROR_RESPONSE` message is available on a socket.
 * **Event: `close`**
 
 Emitted when the server closes.
+
+<a name="class-stun-server-event-error" />
+
+* **Event: `error`**
+
+Emitted when the server got an invalid message.
 
 <a name="class-stun-attribute" />
 
