@@ -359,6 +359,13 @@ These are the types of STUN messages defined in [RFC5389](https://tools.ietf.org
 * `STUN_BINDING_RESPONSE`
 * `STUN_BINDING_ERROR_RESPONSE`
 
+These are the event names for STUN messages above:
+
+* `STUN_EVENT_BINDING_REQUEST`
+* `STUN_EVENT_BINDING_INDICATION`
+* `STUN_EVENT_BINDING_RESPONSE`
+* `STUN_EVENT_BINDING_ERROR_RESPONSE`
+
 These are the types of STUN messages defined in [RFC5766](https://tools.ietf.org/html/rfc5766):
 
 * `STUN_ALLOCATE_REQUEST`
