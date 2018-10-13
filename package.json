@@ -36,7 +36,7 @@
   "dependencies": {
     "binary-data": "^0.5.0-0",
     "buffer-xor": "^2.0.2",
-    "crc": "^3.5.0",
+    "crc": "^3.8.0",
     "ip": "^1.1.5",
     "is-stun": "^2.0.0"
   },
@@ -106,7 +106,9 @@
         }
       },
       {
-        "files": ["**/attributes/stun-*.js"],
+        "files": [
+          "**/attributes/stun-*.js"
+        ],
         "rules": {
           "class-methods-use-this": "off"
         }
