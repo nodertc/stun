@@ -55,6 +55,7 @@ function createServer(socket) {
   const server = new StunServer(socket)
 
   if (!isExternalSocket) {
+    socket.on('error', error => server.emit('error', error))
     server.once('close', () => socket.close())
   }
 
