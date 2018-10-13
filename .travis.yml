@@ -7,8 +7,5 @@ node_js:
 script: npm run test-ci
 before_install:
 - npm install -g npm@5
-- npm install -g --production greenkeeper-lockfile@1 coveralls
-before_script: greenkeeper-lockfile-update
 after_script:
-- greenkeeper-lockfile-upload
 - cat ./coverage/lcov.info | coveralls
