@@ -1,21 +1,27 @@
-const dgram = require('dgram')
-const stun = require('..')
+'use strict';
 
-const socket = dgram.createSocket('udp4')
-const server = stun.createServer(socket)
+const dgram = require('dgram');
+const stun = require('..');
 
-const { STUN_BINDING_RESPONSE, STUN_ATTR_XOR_MAPPED_ADDRESS, STUN_ATTR_SOFTWARE } = stun.constants
-const userAgent = `node/${process.version} stun/v1.0.0`
+const socket = dgram.createSocket('udp4');
+const server = stun.createServer(socket);
+
+const {
+  STUN_BINDING_RESPONSE,
+  STUN_ATTR_XOR_MAPPED_ADDRESS,
+  STUN_ATTR_SOFTWARE,
+} = stun.constants;
+const userAgent = `node/${process.version} stun/v1.0.0`;
 
 server.on('bindingRequest', (req, rinfo) => {
-  const msg = stun.createMessage(STUN_BINDING_RESPONSE)
+  const msg = stun.createMessage(STUN_BINDING_RESPONSE);
 
-  msg.addAttribute(STUN_ATTR_XOR_MAPPED_ADDRESS, rinfo.address, rinfo.port)
-  msg.addAttribute(STUN_ATTR_SOFTWARE, userAgent)
+  msg.addAttribute(STUN_ATTR_XOR_MAPPED_ADDRESS, rinfo.address, rinfo.port);
+  msg.addAttribute(STUN_ATTR_SOFTWARE, userAgent);
 
-  server.send(msg, rinfo.port, rinfo.address)
-})
+  server.send(msg, rinfo.port, rinfo.address);
+});
 
 socket.bind(19302, () => {
-  console.log('[stun] server started')
-})
+  console.log('[stun] server started');
+});

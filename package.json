@@ -4,11 +4,9 @@
   "description": "Session Traversal Utilities for NAT (STUN) server.",
   "main": "src/index.js",
   "scripts": {
-    "lint": "npm run lint-public && npm run lint-internal",
-    "lint-public": "npx xo",
-    "lint-internal": "for file in $(find $PWD/src/node_modules -name '*.js'); do cat $file | npx xo --stdin --stdin-filename=$file --cwd=$PWD/src/node_modules || exit $?; done",
-    "cover": "jest --coverage",
-    "test": "npm run lint && jest",
+    "lint": "npx eslint .",
+    "cover": "npx jest --coverage",
+    "test": "npm run lint && npx jest",
     "test-ci": "npm run lint && npm run cover"
   },
   "repository": {
@@ -30,8 +28,10 @@
   },
   "homepage": "https://github.com/nodertc/stun#readme",
   "devDependencies": {
-    "jest": "^23.1.0",
-    "xo": "^0.21.1"
+    "@nodertc/eslint-config": "^0.2.1",
+    "eslint": "^5.7.0",
+    "jest": "^23.6.0",
+    "prettier": "^1.14.3"
   },
   "dependencies": {
     "binary-data": "^0.5.0-0",
@@ -43,37 +43,74 @@
   "engines": {
     "node": ">=6"
   },
-  "xo": {
-    "semicolon": false,
-    "space": 2,
-    "rules": {
-      "object-curly-spacing": [
-        "error",
-        "always"
-      ],
-      "import/no-extraneous-dependencies": "off"
-    },
-    "overrides": [
-      {
-        "files": "test/**/*.js",
-        "envs": [
-          "jest"
-        ],
-        "rules": {
-          "import/no-unresolved": "off"
-        }
-      }
-    ]
-  },
   "jest": {
     "modulePaths": [
       "<rootDir>",
+      "<rootDir>/src",
       "<rootDir>/src/node_modules"
     ],
-    "testRegex": "test/(.*)\\.js$",
+    "testMatch": [
+      "**/test/**/*.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
     "coverageDirectory": "<rootDir>/coverage",
+    "collectCoverageFrom": [
+      "**/src/*.js",
+      "**/src/node_modules/**/*.js"
+    ],
     "coveragePathIgnorePatterns": [
-      "/test/"
+      "<rootDir>/node_modules/"
+    ],
+    "cacheDirectory": ".jest-cache",
+    "haste": {
+      "providesModuleNodeModules": [
+        "attributes",
+        "lib"
+      ]
+    }
+  },
+  "eslintConfig": {
+    "extends": "@nodertc",
+    "overrides": [
+      {
+        "files": [
+          "test/**/*.js"
+        ],
+        "env": {
+          "jest": true
+        },
+        "settings": {
+          "import/resolver": {
+            "node": {
+              "moduleDirectory": [
+                "node_modules",
+                "src",
+                "src/node_modules"
+              ]
+            }
+          }
+        },
+        "rules": {
+          "require-jsdoc": "off"
+        }
+      },
+      {
+        "files": [
+          "examples/*.js"
+        ],
+        "rules": {
+          "no-console": "off",
+          "require-jsdoc": "off"
+        }
+      },
+      {
+        "files": ["**/attributes/stun-*.js"],
+        "rules": {
+          "class-methods-use-this": "off"
+        }
+      }
     ]
   }
 }
