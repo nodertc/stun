@@ -52,6 +52,15 @@ server.send(request, 19302, 'stun.l.google.com')
   * [`addAttribute(type, value: number)`](#class-stun-message-add-attribute-number)
   * [`addAttribute(type, value: array<number>)`](#class-stun-message-add-attribute-array)
   * [`addAttribute(type, code: number, reason: string)`](#class-stun-message-add-attribute-error)
+  * [`addAddress(ip: string, port: number): StunAddressAttribute`](#class-stun-message-add-address)
+  * [`addAlternateServer(ip: string, port: number): StunAddressAttribute`](#class-stun-message-add-alternate-server)
+  * [`addXorAddress(ip: string, port: number): StunXorAddressAttribute`](#class-stun-message-add-xor-address)
+  * [`addUsername(username: string): StunByteStringAttribute`](#class-stun-message-add-username)
+  * [`addRealm(realm: string): StunByteStringAttribute`](#class-stun-message-add-realm)
+  * [`addNonce(nonce: string): StunByteStringAttribute`](#class-stun-message-add-nonce)
+  * [`addSoftware(software: string): StunByteStringAttribute`](#class-stun-message-add-software)
+  * [`addUnknownAttributes(attributes: number[]): StunUInt16ListAttribute`](#class-stun-message-add-unknown-attributes)
+  * [`addError(code: number, reason: string): StunErrorCodeAttribute`](#class-stun-message-add-error)
   * [`getAttribute(type): StunAttribute`](#class-stun-message-get-attribute)
   * [`removeAttribute(type): bool`](#class-stun-message-remove-attribute)
   * [`get count: number`](#class-stun-message-get-count)
@@ -226,6 +235,78 @@ Adds a `type` attribute to the current message. The `type` argument should be `S
 ```js
 stunMsg.addAttribute(STUN_ATTR_ERROR_CODE, STUN_CODE_UNAUTHORIZED, STUN_REASON_UNAUTHORIZED)
 ```
+
+<a name="class-stun-message-add-address" />
+
+* **`addAddress(ip: string, port: number): StunAddressAttribute`**
+
+Adds a `MAPPED-ADDRESS` attribute to the message.
+
+See [RFC5389](https://tools.ietf.org/html/rfc5389#section-15.1)
+
+<a name="class-stun-message-add-alternate-server" />
+
+* **`addAlternateServer(ip: string, port: number): StunAddressAttribute`**
+
+Adds a `ALTERNATE-SERVER` attribute to the message.
+
+See [RFC5389](https://tools.ietf.org/html/rfc5389#section-15.11)
+
+<a name="class-stun-message-add-xor-address" />
+
+* **`addXorAddress(ip: string, port: number): StunXorAddressAttribute`**
+
+Adds a `XOR-MAPPED-ADDRESS` attribute to the message.
+
+See [RFC5389](https://tools.ietf.org/html/rfc5389#section-15.2)
+
+<a name="class-stun-message-add-username" />
+
+* **`addUsername(username: string): StunByteStringAttribute`**
+
+Adds a `USERNAME` attribute to the message.
+
+See [RFC5389](https://tools.ietf.org/html/rfc5389#section-15.3)
+
+<a name="class-stun-message-add-realm" />
+
+* **`addRealm(realm: string): StunByteStringAttribute`**
+
+Adds a `REALM` attribute to the message.
+
+See [RFC5389](https://tools.ietf.org/html/rfc5389#section-15.7)
+
+<a name="class-stun-message-add-nonce" />
+
+* **`addNonce(nonce: string): StunByteStringAttribute`**
+
+Adds a `NONCE` attribute to the message.
+
+See [RFC5389](https://tools.ietf.org/html/rfc5389#section-15.8)
+
+<a name="class-stun-message-add-software" />
+
+* **`addSoftware(software: string): StunByteStringAttribute`**
+
+Adds a `SOFTWARE` attribute to the message.
+
+See [RFC5389](https://tools.ietf.org/html/rfc5389#section-15.10)
+
+<a name="class-stun-message-add-unknown-attributes" />
+
+* **`addUnknownAttributes(attributes: number[]): StunUInt16ListAttribute`**
+
+Adds a `UNKNOWN-ATTRIBUTES` attribute to the message.
+
+See [RFC5389](https://tools.ietf.org/html/rfc5389#section-15.9)
+
+<a name="class-stun-message-add-error" />
+
+* **`addError(code: number, reason: string): StunErrorCodeAttribute`**
+
+Adds a `ERROR-CODE` attribute to the message.
+
+See [RFC5389](https://tools.ietf.org/html/rfc5389#section-15.6)
 
 <a name="class-stun-message-get-attribute" />
 

@@ -4,6 +4,8 @@ const constants = require('lib/constants');
 const StunMessage = require('lib/message');
 const StunAttribute = require('attributes/stun-attribute');
 
+const { attributeValueType, attributeType } = constants;
+
 test('encode', () => {
   const msg = new StunMessage();
 
@@ -249,4 +251,233 @@ test('iterator', () => {
         break;
     }
   }
+});
+
+test('add address', () => {
+  const message = new StunMessage();
+
+  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.addAddress('127.0.0.1', 1516);
+
+  const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+  expect(attributes.length).toEqual(1);
+  expect(attributes[0].valueType).toEqual(attributeValueType.ADDRESS);
+  expect(attributes[0].value).toEqual({
+    address: '127.0.0.1',
+    port: 1516,
+    family: 'IPv4',
+  });
+});
+
+test('add xor address', () => {
+  const message = new StunMessage();
+
+  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.addXorAddress('127.0.0.1', 1516);
+
+  const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+  expect(attributes.length).toEqual(1);
+  expect(attributes[0].valueType).toEqual(attributeValueType.XOR_ADDRESS);
+  expect(attributes[0].value).toEqual({
+    address: '127.0.0.1',
+    port: 1516,
+    family: 'IPv4',
+  });
+});
+
+test('add alternate server  ', () => {
+  const message = new StunMessage();
+
+  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.addAlternateServer('127.0.0.1', 1516);
+
+  const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+  expect(attributes.length).toEqual(1);
+  expect(attributes[0].type).toEqual(attributeType.ALTERNATE_SERVER);
+  expect(attributes[0].value).toEqual({
+    address: '127.0.0.1',
+    port: 1516,
+    family: 'IPv4',
+  });
+});
+
+test('add username', () => {
+  const message = new StunMessage();
+
+  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.addUsername('stun/1.2.3');
+
+  const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+  expect(attributes.length).toEqual(1);
+  expect(attributes[0].type).toEqual(attributeType.USERNAME);
+});
+
+test('add invalid  username', () => {
+  const message = new StunMessage();
+
+  message.setType(constants.messageType.BINDING_RESPONSE);
+
+  expect(() => message.addUsername('stun/1.2.3'.repeat(52))).toThrowError(
+    /Username should be less than 513 bytes/i
+  );
+
+  expect(message.count).toEqual(0);
+});
+
+test('add software', () => {
+  const message = new StunMessage();
+
+  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.addSoftware('stun/1.2.3');
+
+  const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+  expect(attributes.length).toEqual(1);
+  expect(attributes[0].type).toEqual(attributeType.SOFTWARE);
+});
+
+test('add realm', () => {
+  const message = new StunMessage();
+
+  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.addRealm('stun/1.2.3');
+
+  const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+  expect(attributes.length).toEqual(1);
+  expect(attributes[0].type).toEqual(attributeType.REALM);
+});
+
+test('add nonce', () => {
+  const message = new StunMessage();
+
+  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.addNonce('stun/1.2.3');
+
+  const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+  expect(attributes.length).toEqual(1);
+  expect(attributes[0].type).toEqual(attributeType.NONCE);
+});
+
+test('add invalid nonce', () => {
+  const message = new StunMessage();
+
+  message.setType(constants.messageType.BINDING_RESPONSE);
+  expect(() => message.addNonce('stun/1.2.3'.repeat(13))).toThrowError(
+    /less than 128 characters/i
+  );
+  expect(message.count).toEqual(0);
+});
+
+describe('removeAttribute', () => {
+  test('attr not found', () => {
+    const message = new StunMessage();
+
+    expect(message.removeAttribute(attributeType.MAPPED_ADDRESS)).toEqual(
+      false
+    );
+  });
+
+  test('from start', () => {
+    const message = new StunMessage();
+
+    message.addAddress('127.0.0.1', 1234);
+    message.addXorAddress('127.0.0.1', 1516);
+
+    expect(message.removeAttribute(attributeType.MAPPED_ADDRESS)).toEqual(true);
+
+    const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+    expect(attributes.length).toEqual(1);
+    expect(attributes[0].valueType).toEqual(attributeValueType.XOR_ADDRESS);
+  });
+
+  test('from end', () => {
+    const message = new StunMessage();
+
+    message.addAddress('127.0.0.1', 1234);
+    message.addXorAddress('127.0.0.1', 1516);
+
+    expect(message.removeAttribute(attributeType.XOR_MAPPED_ADDRESS)).toEqual(
+      true
+    );
+
+    const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+    expect(attributes.length).toEqual(1);
+    expect(attributes[0].valueType).toEqual(attributeValueType.ADDRESS);
+  });
+
+  test('from the middle', () => {
+    const message = new StunMessage();
+
+    message.addSoftware('stun/1.2.3');
+    message.addAddress('127.0.0.1', 1234);
+    message.addXorAddress('127.0.0.1', 1516);
+
+    expect(message.removeAttribute(attributeType.MAPPED_ADDRESS)).toEqual(true);
+
+    const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+    expect(attributes.length).toEqual(2);
+    expect(attributes[0].type).toEqual(attributeType.SOFTWARE);
+    expect(attributes[1].type).toEqual(attributeType.XOR_MAPPED_ADDRESS);
+  });
+});
+
+describe('add error', () => {
+  test('should work', () => {
+    const message = new StunMessage();
+
+    message.setType(constants.messageType.BINDING_ERROR_RESPONSE);
+    message.addError(300, 'hello world');
+
+    const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+    expect(attributes.length).toEqual(1);
+    expect(attributes[0].type).toEqual(attributeType.ERROR_CODE);
+    expect(attributes[0].reason).toEqual('hello world');
+    expect(attributes[0].code).toEqual(300);
+  });
+
+  test('should be error type message', () => {
+    const message = new StunMessage();
+
+    message.setType(constants.messageType.BINDING_RESPONSE);
+    expect(() => message.addError(300, 'hello world')).toThrowError(
+      'The attribute should be in ERROR_RESPONSE messages'
+    );
+  });
+
+  test('invalid error code', () => {
+    const message = new StunMessage();
+
+    message.setType(constants.messageType.BINDING_ERROR_RESPONSE);
+
+    expect(() => message.addError(200)).toThrowError(
+      /Error code should between 300 - 699/i
+    );
+    expect(() => message.addError(700)).toThrowError(
+      /Error code should between 300 - 699/i
+    );
+  });
+
+  test('should set default reason', () => {
+    const message = new StunMessage();
+
+    message.setType(constants.messageType.BINDING_ERROR_RESPONSE);
+    message.addError(300);
+
+    const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+    expect(attributes.length).toEqual(1);
+    expect(attributes[0].type).toEqual(attributeType.ERROR_CODE);
+    expect(attributes[0].reason).toEqual(constants.errorReason.TRY_ALTERNATE);
+    expect(attributes[0].code).toEqual(300);
+  });
+});
+
+test('add UNKNOWN-ATTRIBUTES', () => {
+  const message = new StunMessage();
+
+  message.setType(constants.messageType.BINDING_ERROR_RESPONSE);
+  message.addUnknownAttributes([1, 2, 3]);
+
+  const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+  expect(attributes.length).toEqual(1);
+  expect(attributes[0].type).toEqual(attributeType.UNKNOWN_ATTRIBUTES);
+  expect(attributes[0].value).toEqual([1, 2, 3]);
 });
