@@ -6,18 +6,14 @@ const stun = require('..');
 const socket = dgram.createSocket('udp4');
 const server = stun.createServer(socket);
 
-const {
-  STUN_BINDING_RESPONSE,
-  STUN_ATTR_XOR_MAPPED_ADDRESS,
-  STUN_ATTR_SOFTWARE,
-} = stun.constants;
+const { STUN_BINDING_RESPONSE, STUN_EVENT_BINDING_REQUEST } = stun.constants;
 const userAgent = `node/${process.version} stun/v1.0.0`;
 
-server.on('bindingRequest', (req, rinfo) => {
+server.on(STUN_EVENT_BINDING_REQUEST, (req, rinfo) => {
   const msg = stun.createMessage(STUN_BINDING_RESPONSE);
 
-  msg.addAttribute(STUN_ATTR_XOR_MAPPED_ADDRESS, rinfo.address, rinfo.port);
-  msg.addAttribute(STUN_ATTR_SOFTWARE, userAgent);
+  msg.addXorAddress(rinfo.address, rinfo.port);
+  msg.addSoftware(userAgent);
 
   server.send(msg, rinfo.port, rinfo.address);
 });
