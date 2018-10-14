@@ -6,6 +6,6 @@ node_js:
 
 script: npm run test-ci
 before_install:
-- npm install -g npm@5
+- npm install -g npm@5 coveralls
 after_script:
 - cat ./coverage/lcov.info | coveralls
