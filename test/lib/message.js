@@ -481,3 +481,86 @@ test('add UNKNOWN-ATTRIBUTES', () => {
   expect(attributes[0].type).toEqual(attributeType.UNKNOWN_ATTRIBUTES);
   expect(attributes[0].value).toEqual([1, 2, 3]);
 });
+
+test('add PRIORITY', () => {
+  const message = new StunMessage();
+
+  message.setType(constants.messageType.BINDING_ERROR_RESPONSE);
+  message.addPriority(123);
+
+  const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+  expect(attributes.length).toEqual(1);
+  expect(attributes[0].type).toEqual(attributeType.PRIORITY);
+  expect(attributes[0].value).toEqual(123);
+
+  expect(() => message.addPriority(1.23)).toThrow(
+    /The argument should be 32-bit integer/i
+  );
+  expect(() => message.addPriority(Number.MAX_SAFE_INTEGER)).toThrow(
+    /The argument should be 32-bit integer/i
+  );
+});
+
+test('add USE-CANDIDATE', () => {
+  const message = new StunMessage();
+
+  message.addUseCandidate();
+
+  const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+  expect(attributes.length).toEqual(1);
+  expect(attributes[0].type).toEqual(attributeType.USE_CANDIDATE);
+});
+
+test('add ICE-CONTROLLED', () => {
+  const message = new StunMessage();
+
+  const tiebreaker = Buffer.allocUnsafe(8);
+  const invalidTiebreaker = Buffer.allocUnsafe(4);
+
+  message.setType(constants.messageType.BINDING_REQUEST);
+  message.addIceControlled(tiebreaker);
+
+  const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+  expect(attributes.length).toEqual(1);
+  expect(attributes[0].type).toEqual(attributeType.ICE_CONTROLLED);
+  expect(attributes[0].value).toEqual(tiebreaker);
+
+  expect(() => message.addIceControlled(123)).toThrow(
+    /shoud be a 64-bit unsigned integer/i
+  );
+  expect(() => message.addIceControlled(invalidTiebreaker)).toThrow(
+    /shoud be a 64-bit unsigned integer/i
+  );
+
+  message.setType(constants.messageType.BINDING_ERROR_RESPONSE);
+  expect(() => message.addIceControlled(tiebreaker)).toThrow(
+    /should present in a Binding request/i
+  );
+});
+
+test('add ICE-CONTROLLING', () => {
+  const message = new StunMessage();
+
+  const tiebreaker = Buffer.allocUnsafe(8);
+  const invalidTiebreaker = Buffer.allocUnsafe(4);
+
+  message.setType(constants.messageType.BINDING_REQUEST);
+  message.addIceControlling(tiebreaker);
+
+  const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
+  expect(attributes.length).toEqual(1);
+  expect(attributes[0].type).toEqual(attributeType.ICE_CONTROLLING);
+  expect(attributes[0].value).toEqual(tiebreaker);
+
+  expect(() => message.addIceControlling(123)).toThrow(
+    /shoud be a 64-bit unsigned integer/i
+  );
+  expect(() => message.addIceControlling(invalidTiebreaker)).toThrow(
+    /shoud be a 64-bit unsigned integer/i
+  );
+
+  message.setType(constants.messageType.BINDING_ERROR_RESPONSE);
+  expect(() => message.addIceControlling(tiebreaker)).toThrow(
+    /should present in a Binding request/i
+  );
+});

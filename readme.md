@@ -65,6 +65,10 @@ server.send(request, 19302, 'stun.l.google.com')
   * [`addSoftware(software: string): StunByteStringAttribute`](#class-stun-message-add-software)
   * [`addUnknownAttributes(attributes: number[]): StunUInt16ListAttribute`](#class-stun-message-add-unknown-attributes)
   * [`addError(code: number, reason: string): StunErrorCodeAttribute`](#class-stun-message-add-error)
+  * [`addPriority(priority: number): StunUInt32Attribute`](#class-stun-message-add-priority)
+  * [`addUseCandidate(): StunByteStringAttribute`](#class-stun-message-add-use-candidate)
+  * [`addIceControlled(tiebreaker: Buffer): StunByteStringAttribute`](#class-stun-message-add-ice-controlled)
+  * [`addIceControlling(tiebreaker: Buffer): StunByteStringAttribute`](#class-stun-message-add-ice-controlling)
   * [`getAttribute(type): StunAttribute`](#class-stun-message-get-attribute)
   * [`removeAttribute(type): bool`](#class-stun-message-remove-attribute)
   * [`get count: number`](#class-stun-message-get-count)
@@ -311,6 +315,38 @@ See [RFC5389](https://tools.ietf.org/html/rfc5389#section-15.9)
 Adds a `ERROR-CODE` attribute to the message.
 
 See [RFC5389](https://tools.ietf.org/html/rfc5389#section-15.6)
+
+<a name="class-stun-message-add-priority" />
+
+* **`addPriority(priority: number): StunUInt32Attribute`**
+
+Adds a `PRIORITY` attribute to the message.
+
+See [RFC8445](https://tools.ietf.org/html/rfc8445#section-16.1)
+
+<a name="class-stun-message-add-use-candidate" />
+
+* **`addUseCandidate(): StunByteStringAttribute`**
+
+Adds a `USE-CANDIDATE` attribute to the message.
+
+See [RFC8445](https://tools.ietf.org/html/rfc8445#section-16.1)
+
+<a name="class-stun-message-add-ice-controlled" />
+
+* **`addIceControlled(tiebreaker: Buffer): StunByteStringAttribute`**
+
+Adds a `ICE-CONTROLLED` attribute to the message.
+
+See [RFC8445](https://tools.ietf.org/html/rfc8445#section-16.1)
+
+<a name="class-stun-message-add-ice-controlling" />
+
+* **`addIceControlling(tiebreaker: Buffer): StunByteStringAttribute`**
+
+Adds a `ICE-CONTROLLING` attribute to the message.
+
+See [RFC8445](https://tools.ietf.org/html/rfc8445#section-16.1)
 
 <a name="class-stun-message-get-attribute" />
 
