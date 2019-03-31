@@ -6,7 +6,7 @@
 [![license](https://img.shields.io/npm/l/stun.svg)](https://npmjs.org/package/stun)
 [![downloads](https://img.shields.io/npm/dm/stun.svg)](https://npmjs.org/package/stun)
 [![Coverage Status](https://coveralls.io/repos/github/nodertc/stun/badge.svg?branch=master)](https://coveralls.io/github/nodertc/stun?branch=master)
-[![telegram](https://img.shields.io/badge/telegram-nodertc-brightgreen.svg)](https://t.me/nodertc)
+[![Gitter chat](https://badges.gitter.im/nodertc.png)](https://gitter.im/nodertc/community)
 
 Session Traversal Utilities for NAT (STUN) server. Implements [RFC5389](https://tools.ietf.org/html/rfc5389) with partial support [RFC5766](https://tools.ietf.org/html/rfc5766), [RFC5245](https://tools.ietf.org/html/rfc5245), [RFC5780](https://tools.ietf.org/html/rfc5780).
 
