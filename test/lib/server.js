@@ -1,6 +1,9 @@
 'use strict';
 
 const Server = require('lib/server');
+const { StunMessageError, StunResponseError } = require('lib/errors');
+const { messageType } = require('lib/constants');
+const StunMessage = require('lib/message');
 
 /**
  * Create fake udp socket.
@@ -23,7 +26,23 @@ test('do not throw exception on invalid message', () => {
 
   expect(server.emit).lastCalledWith(
     'error',
-    new Error('Invalid message'),
-    message
+    new StunMessageError(message, {})
+  );
+});
+
+test('emit StunResponseError for an error messages', () => {
+  const server = new Server(socket());
+  server.emit = jest.fn();
+
+  const message = new StunMessage();
+
+  message.setType(messageType.BINDING_ERROR_RESPONSE);
+  message.addError(300, 'hello world');
+
+  server.process(message.toBuffer(), {});
+
+  expect(server.emit).lastCalledWith(
+    'error',
+    new StunResponseError(message, {})
   );
 });

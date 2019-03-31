@@ -9,6 +9,11 @@ const {
   validateFingerprint,
   validateMessageIntegrity,
 } = require('lib/validate');
+const {
+  StunError,
+  StunMessageError,
+  StunResponseError,
+} = require('lib/errors');
 
 const constants = {};
 
@@ -19,6 +24,9 @@ module.exports = {
   validateMessageIntegrity,
   StunMessage,
   StunServer,
+  StunError,
+  StunMessageError,
+  StunResponseError,
   constants,
 };
 

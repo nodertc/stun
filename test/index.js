@@ -11,6 +11,9 @@ describe('should export', () => {
     'validateMessageIntegrity',
     'StunMessage',
     'StunServer',
+    'StunError',
+    'StunMessageError',
+    'StunResponseError',
     'constants',
   ];
 

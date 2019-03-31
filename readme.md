@@ -94,6 +94,9 @@ server.send(request, 19302, 'stun.l.google.com')
   * [`get type`](#class-stun-attribute-get-type)
   * [`get value`](#class-stun-attribute-get-value)
 * [`constants: object`](#constants)
+* [`class StunError`](#class-stun-error)
+* [`class StunMessageError`](#class-stun-message-error)
+* [`class StunResponseError`](#class-stun-response-error)
 
 <a name="create-message" />
 
@@ -579,6 +582,40 @@ These are the strings for the error codes above:
 * `STUN_REASON_ALLOCATION_QUOTA`
 * `STUN_REASON_INSUFFICIENT_CAPACITY`
 
+<a name="class-stun-error" />
+
+#### **`class StunError`**
+
+Base class for all generated errors.
+
+* **get `packet: Buffer|StunMessage`**
+
+Received data.
+
+* **get `sender: object`**
+
+For UDP, this is an `rinfo` attribute.
+
+<a name="class-stun-message-error" />
+
+#### **`class StunMessageError`**
+
+The STUN server may receive invalid messages. This error class represent ones. Inherits from `StunError`.
+
+* **get `packet: Buffer`**
+
+See above.
+
+<a name="class-stun-response-error" />
+
+#### **`class StunResponseError`**
+
+This class represent protocol level errors, for messages with class type `ERROR`. Inherits from `StunError`.
+
+* **get `packet: StunMessage`**
+
+See above.
+
 ## License
 
-MIT, 2017 (c) Dmitriy Tsvettsikh
+MIT, 2017-2019 (c) Dmitriy Tsvettsikh
