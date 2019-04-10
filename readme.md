@@ -43,6 +43,13 @@ server.once(STUN_EVENT_BINDING_RESPONSE, stunMsg => {
 server.send(request, 19302, 'stun.l.google.com')
 ```
 
+## CLI
+
+```bash
+$ npm i -g stun
+$ stun # started on udp/0.0.0.0:19302
+```
+
 ## API
 
 * [`createMessage(type): StunMessage`](#create-message)

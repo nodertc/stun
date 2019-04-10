@@ -9,6 +9,7 @@
     "test": "npm run lint && npx jest",
     "test-ci": "npm run lint && npm run cover"
   },
+  "bin": "./src/cli.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nodertc/stun.git"
@@ -39,6 +40,7 @@
     "ip": "^1.1.5",
     "ip2buf": "^2.0.0",
     "is-stun": "^2.0.0",
+    "meow": "^5.0.0",
     "turbo-crc32": "^1.0.0"
   },
   "engines": {
