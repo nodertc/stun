@@ -8,7 +8,7 @@ const {
   STUN_EVENT_BINDING_RESPONSE,
 } = stun.constants;
 
-const server = stun.createServer();
+const server = stun.createServer({ type: 'udp' });
 const request = stun.createMessage(STUN_BINDING_REQUEST);
 
 server.once(STUN_EVENT_BINDING_RESPONSE, stunMsg => {

@@ -1,6 +1,6 @@
 'use strict';
 
-const Server = require('lib/server');
+const Server = require('net/dgram-server');
 const { StunMessageError, StunResponseError } = require('lib/errors');
 const { messageType } = require('lib/constants');
 const StunMessage = require('lib/message');

@@ -56,18 +56,36 @@ function createMessage(type, transaction) {
 
 /**
  * Creates a new STUN server.
- * @param {dgram.Socket} [socket] - Optional udp socket.
+ * @param {Object} options
+ * @param {Object} options.type
+ * @param {Object} [options.socket]
  * @returns {StunServer} StunServer instance.
  */
-function createServer(socket) {
-  let isExternalSocket = true;
-
-  if (socket === undefined) {
-    // eslint-disable-next-line no-param-reassign
-    socket = dgram.createSocket('udp4');
-    isExternalSocket = false;
+function createServer(options = {}) {
+  switch (options.type) {
+    case 'udp':
+      return createDgramServer(options);
+    default:
+      break;
   }
 
+  throw new Error('Invalid server type.');
+}
+
+/**
+ * Creates dgram STUN server.
+ * @param {Object} [options]
+ * @param {dgram.Socket} [options.socket] - Optional udp socket.
+ * @returns {StunServer}
+ */
+function createDgramServer(options = {}) {
+  let isExternalSocket = false;
+
+  if (options.socket instanceof dgram.Socket) {
+    isExternalSocket = true;
+  }
+
+  const socket = isExternalSocket ? options.socket : dgram.createSocket('udp4');
   const server = new StunServer(socket);
 
   if (!isExternalSocket) {

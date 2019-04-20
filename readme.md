@@ -120,9 +120,15 @@ Create transaction id for STUN message. Follow [RFC5389](https://tools.ietf.org/
 
 <a name="create-server" />
 
-#### `createServer([socket: dgram.Socket]): StunServer`
+#### `createServer(options: object): StunServer`
 
-Creates a `StunServer` object. An optional `socket` argument should be instance of `dgram.Socket`. If `socket` is not specifed, the `dgram.Socket` will be created with `udp4` type and will bound to the "all interfaces" address on a random port.
+* `options.type: string`
+
+The type of socket. Must be 'udp'. Required.
+
+* `options.socket: dgram.Socket`
+
+Creates a `StunServer` object of the specified type. The `type` argument should be 'udp' at the moment. An optional `socket` argument should be instance of `dgram.Socket`. If `socket` is not specifed, the `dgram.Socket` will be created with `udp4` type and will bound to the "all interfaces" address on a random port.
 
 <a name="validate-fingerprint" />
 
