@@ -3,7 +3,7 @@
 const crypto = require('crypto');
 const dgram = require('dgram');
 const StunMessage = require('lib/message');
-const StunServer = require('lib/server');
+const StunServer = require('net/dgram-server');
 const defaultConstants = require('lib/constants');
 const {
   validateFingerprint,
