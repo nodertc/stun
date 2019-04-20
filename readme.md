@@ -53,6 +53,7 @@ $ stun # started on udp/0.0.0.0:19302
 ## API
 
 * [`createMessage(type): StunMessage`](#create-message)
+* [`createTransaction(): Buffer`](#create-transaction)
 * [`createServer([socket: dgram.Socket]): StunServer`](#create-server)
 * [`validateFingerprint(message: StunMessage): bool`](#validate-fingerprint)
 * [`validateMessageIntegrity(message: StunMessage, key: string): bool`](#validate-message-integrity)
@@ -110,6 +111,12 @@ $ stun # started on udp/0.0.0.0:19302
 #### `createMessage(type): StunMessage`
 
 Creates an `StunMessage` object of the specified `type` with random `transaction` field. The `type` argument is a number that should be a message type. See `constants` below.
+
+<a name="create-transaction" />
+
+#### `createTransaction(): Buffer`
+
+Create transaction id for STUN message. Follow [RFC5389](https://tools.ietf.org/html/rfc5389).
 
 <a name="create-server" />
 

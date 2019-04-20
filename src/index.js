@@ -20,6 +20,7 @@ const constants = {};
 module.exports = {
   createMessage,
   createServer,
+  createTransaction,
   validateFingerprint,
   validateMessageIntegrity,
   StunMessage,
@@ -31,6 +32,14 @@ module.exports = {
 };
 
 /**
+ * Create transaction id for STUN message.
+ * @returns {Buffer}
+ */
+function createTransaction() {
+  return crypto.randomBytes(defaultConstants.kStunTransactionIdLength);
+}
+
+/**
  * Creates a new STUN message.
  * @param {number} type - Message type (see constants).
  * @param {Buffer} [transaction] - Message `transaction` field, random by default.
@@ -40,13 +49,7 @@ function createMessage(type, transaction) {
   const msg = new StunMessage();
 
   msg.setType(type);
-
-  if (!transaction) {
-    // eslint-disable-next-line no-param-reassign
-    transaction = crypto.randomBytes(defaultConstants.kStunTransactionIdLength);
-  }
-
-  msg.setTransactionID(transaction);
+  msg.setTransactionID(transaction || createTransaction());
 
   return msg;
 }
