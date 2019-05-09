@@ -63,7 +63,8 @@ function createMessage(type, transaction) {
  */
 function createServer(options = {}) {
   switch (options.type) {
-    case 'udp':
+    case 'udp4':
+    case 'udp6':
       return createDgramServer(options);
     default:
       break;
@@ -75,17 +76,20 @@ function createServer(options = {}) {
 /**
  * Creates dgram STUN server.
  * @param {Object} [options]
+ * @param {Object} options.type - The type of UDP socket.
  * @param {dgram.Socket} [options.socket] - Optional udp socket.
  * @returns {StunServer}
  */
 function createDgramServer(options = {}) {
   let isExternalSocket = false;
+  let { socket } = options;
 
-  if (options.socket instanceof dgram.Socket) {
+  if (socket instanceof dgram.Socket) {
     isExternalSocket = true;
+  } else {
+    socket = dgram.createSocket(options);
   }
 
-  const socket = isExternalSocket ? options.socket : dgram.createSocket('udp4');
   const server = new StunServer(socket);
 
   if (!isExternalSocket) {
