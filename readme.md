@@ -92,12 +92,14 @@ $ stun # started on udp/0.0.0.0:19302
   * [`new StunServer(socket: dgram.Socket)`](#class-stun-server-new)
   * [`send(message: StunMessage, port: number, address: string[, cb: function])`](#class-stun-server-send)
   * [`close()`](#class-stun-server-close)
+  * [`listen(port: number, [address: string], [callback: function()])`](#class-stun-server-listen)
   * [`Event: bindingRequest`](#class-stun-server-event-binding-request)
   * [`Event: bindingIndication`](#class-stun-server-event-binding-indication)
   * [`Event: bindingResponse`](#class-stun-server-event-binding-response)
   * [`Event: bindingError`](#class-stun-server-event-binding-error)
   * [`Event: close`](#class-stun-server-event-close)
   * [`Event: error`](#class-stun-server-event-error)
+  * [`Event: listening`](#class-stun-server-event-listening)
 * [`class StunAttribute`](#class-stun-attribute)
   * [`get type`](#class-stun-attribute-get-type)
   * [`get value`](#class-stun-attribute-get-value)
@@ -436,6 +438,12 @@ Sends the `StunMessage` message on the socket. The destination `port` and `addre
 
 Stops the processing of the incoming messages and emits `close` event.
 
+<a name="class-stun-server-listen" />
+
+* **`listen(port: number, [address: string], [callback: function()])`**
+
+Attemt to listen for messages on a named `port` and optional `address`. For UDP servers calls [`socket.bind`](https://nodejs.org/dist/latest-v10.x/docs/api/dgram.html#dgram_socket_bind_port_address_callback) under the hood.
+
 <a name="class-stun-server-event-binding-request" />
 
 * **Event: `bindingRequest`**
@@ -471,6 +479,12 @@ Emitted when the server closes.
 * **Event: `error`**
 
 Emitted when the server got an invalid message.
+
+<a name="class-stun-server-event-listening" />
+
+* **Event: `listening`**
+
+The `'listening'` event is emitted whenever a socket begins listening for messages.
 
 <a name="class-stun-attribute" />
 
