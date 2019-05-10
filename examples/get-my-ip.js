@@ -2,22 +2,14 @@
 
 const stun = require('..');
 
-const {
-  STUN_BINDING_REQUEST,
-  STUN_ATTR_XOR_MAPPED_ADDRESS,
-  STUN_EVENT_BINDING_RESPONSE,
-} = stun.constants;
+const { STUN_ATTR_XOR_MAPPED_ADDRESS } = stun.constants;
+const options = { timeout: 250, retries: 2 };
 
-const server = stun.createServer({ type: 'udp4' });
-const request = stun.createMessage(STUN_BINDING_REQUEST);
-
-server.once(STUN_EVENT_BINDING_RESPONSE, stunMsg => {
-  console.log(
-    'your ip:',
-    stunMsg.getAttribute(STUN_ATTR_XOR_MAPPED_ADDRESS).value.address
-  );
-
-  server.close();
+stun.request('stun.l.google.com:19302', options, (err, res) => {
+  if (err) {
+    console.error(err);
+  } else {
+    const { address } = res.getAttribute(STUN_ATTR_XOR_MAPPED_ADDRESS).value;
+    console.log('your ip:', address);
+  }
 });
-
-server.send(request, 19302, 'stun.l.google.com');

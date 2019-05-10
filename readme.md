@@ -57,6 +57,7 @@ $ stun # started on udp/0.0.0.0:19302
 * [`createServer([socket: dgram.Socket]): StunServer`](#create-server)
 * [`validateFingerprint(message: StunMessage): bool`](#validate-fingerprint)
 * [`validateMessageIntegrity(message: StunMessage, key: string): bool`](#validate-message-integrity)
+* [`request(url: string, [options: RequestOptions], callback: function): void`](#request)
 * [`class StunMessage`](#class-stun-message)
   * [`static from(message: Buffer): StunMessage`](#class-stun-message-static-from)
   * [`get type`](#class-stun-message-get-type)
@@ -154,6 +155,36 @@ stunServer.on('bindingResponse', (stunMsg) => {
     // do stuff...
   }
 })
+```
+
+<a name="request" />
+
+#### `request(url: string, [options: RequestOptions], callback: function): void`
+
+Create a request `STUN_BINDING_REQUEST` to stun server, follow [RFC5389](https://tools.ietf.org/html/rfc5389). The first argument may be a host (`stun.example.com`), host with port (`stun.example.com:1234`) or host with port and protocol (`stun://stun.example.com:1234`). By default, port is 3478.
+
+All options described below are optional.
+
+* `options.server: StunServer` - A stun server to receive responses.
+* `options.socket: dgram.Socket` - A UDP socket over which the message will be send.
+* `options.message: StunMessage` - A `STUN_BINDING_REQUEST` message to send.
+* `options.timeout: number` - Initial retransmission timeout (*RTO*) in ms, default is 500ms.
+* `options.maxTimeout: number`- Maximal RTO, default is infinity.
+* `options.retries: number` - Maximal the number of retries, default is 6
+
+The last argument is a function with 2 arguments `err` and `res`. It's follow nodejs callback style. The second argument is instance of `StunMessage`.
+
+```js
+const { STUN_ATTR_XOR_MAPPED_ADDRESS } = stun.constants;
+
+stun.request('stun.l.google.com:19302', (err, res) => {
+  if (err) {
+    console.error(err);
+  } else {
+    const { address } = res.getAttribute(STUN_ATTR_XOR_MAPPED_ADDRESS).value;
+    console.log('your ip:', address);
+  }
+});
 ```
 
 <a name="class-stun-message" />
