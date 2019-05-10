@@ -14,14 +14,14 @@ const cli = meow(
 
   Options:
     --port, -p      Specified a port on which the STUN server are bound
-                    Default port is 19302 defined in RFC5389.
+                    Default port is 3478 defined in RFC5389.
 `,
   {
     flags: {
       port: {
         type: 'string',
         alias: 'p',
-        default: '19302',
+        default: '3478',
       },
     },
   }
@@ -64,7 +64,7 @@ server.on('error', err => {
   process.stderr.write('\n');
 });
 
-socket.bind(isLegalPort(cliPort) ? cliPort : 19302, () => {
+socket.bind(isLegalPort(cliPort) ? cliPort : 3478, () => {
   const { address, port } = socket.address();
 
   process.stdout.write(`stun server started at ${address}:${port}\n`);
