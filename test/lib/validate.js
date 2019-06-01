@@ -4,8 +4,9 @@ const {
   validateFingerprint,
   validateMessageIntegrity,
 } = require('lib/validate');
-const StunMessage = require('lib/message');
 const constants = require('lib/constants');
+const decode = require('message/decode');
+const { createMessage } = require('lib/create-message');
 
 const { SOFTWARE } = constants.attributeType;
 const { BINDING_RESPONSE } = constants.messageType;
@@ -18,13 +19,13 @@ test('validate fingerprint', () => {
     'hex'
   );
 
-  const msg = StunMessage.from(packet);
+  const msg = decode(packet);
 
   expect(validateFingerprint(msg)).toBe(true);
 });
 
 test('`validateFingerprint` should support uint32 value', () => {
-  const msg = new StunMessage();
+  const msg = createMessage();
 
   msg.setType(BINDING_RESPONSE);
   msg.addAttribute(SOFTWARE, '123456789');
@@ -41,7 +42,7 @@ test('validate MESSAGE INTEGRITY', () => {
     'hex'
   );
 
-  const msg = StunMessage.from(packet);
+  const msg = decode(packet);
   const password = '6Gzr+PH5Krjg0VqBa81nE7n6';
 
   expect(validateMessageIntegrity(msg, password)).toBe(true);
@@ -49,7 +50,7 @@ test('validate MESSAGE INTEGRITY', () => {
 
 test('validate MESSAGE INTEGRITY + FINGERPRINT', () => {
   const password = '6Gzr+PH5Krjg0VqBa81nE7n6';
-  const msg = new StunMessage();
+  const msg = createMessage();
 
   msg.setType(BINDING_RESPONSE);
   msg.addAttribute(SOFTWARE, '123456789');

@@ -4,7 +4,7 @@ const Emitter = require('events');
 const Server = require('net/dgram-server');
 const { StunMessageError, StunResponseError } = require('lib/errors');
 const { messageType } = require('lib/constants');
-const StunMessage = require('lib/message');
+const { createMessage } = require('lib/create-message');
 
 /**
  * Create fake udp socket.
@@ -35,7 +35,7 @@ test('emit StunResponseError for an error messages', () => {
   const server = new Server(socket());
   server.emit = jest.fn();
 
-  const message = new StunMessage();
+  const message = createMessage();
 
   message.setType(messageType.BINDING_ERROR_RESPONSE);
   message.addError(300, 'hello world');

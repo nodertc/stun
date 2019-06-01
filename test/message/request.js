@@ -1,166 +1,17 @@
 'use strict';
 
 const constants = require('lib/constants');
-const StunMessage = require('lib/message');
 const StunAttribute = require('attributes/stun-attribute');
+const StunRequest = require('message/request');
 
-const { attributeValueType, attributeType } = constants;
+const {
+  attributeValueType,
+  attributeType,
+  messageType,
+  errorReason,
+} = constants;
 
-test('encode', () => {
-  const msg = new StunMessage();
-
-  msg.setType(constants.messageType.BINDING_REQUEST);
-  msg.setTransactionID(Buffer.from('d00558707bb8cc6a633a9df7', 'hex'));
-  msg.addAttribute(
-    constants.attributeType.XOR_MAPPED_ADDRESS,
-    '192.168.1.35',
-    63524
-  );
-
-  const expectedBuffer = Buffer.from([
-    0,
-    0x01 /* Type */,
-    0,
-    12 /* Length */,
-    0x21,
-    0x12,
-    0xa4,
-    0x42 /* Cookie */,
-    0xd0,
-    0x05,
-    0x58,
-    0x70,
-    0x7b,
-    0xb8,
-    0xcc,
-    0x6a,
-    0x63,
-    0x3a,
-    0x9d,
-    0xf7 /* Transaction */,
-
-    0,
-    0x20 /* XOR_MAPPED_ADDRESS */,
-    0,
-    8 /* Length */,
-    0 /* Reserved */,
-    0x1 /* Family */,
-    0xd9,
-    0x36 /* Port */,
-    0xe1,
-    0xba,
-    0xa5,
-    0x61 /* Ip */,
-  ]);
-
-  expect(msg.toBuffer()).toEqual(expectedBuffer);
-});
-
-test('decode', () => {
-  const packet = Buffer.from([
-    0,
-    0x01 /* Type */,
-    0,
-    12 /* Length */,
-    0x21,
-    0x12,
-    0xa4,
-    0x42 /* Cookie */,
-    0xd0,
-    0x05,
-    0x58,
-    0x70,
-    0x7b,
-    0xb8,
-    0xcc,
-    0x6a,
-    0x63,
-    0x3a,
-    0x9d,
-    0xf7 /* Transaction */,
-
-    0,
-    0x20 /* XOR_MAPPED_ADDRESS */,
-    0,
-    8 /* Length */,
-    0 /* Reserved */,
-    0x1 /* Family */,
-    0xd9,
-    0x36 /* Port */,
-    0xe1,
-    0xba,
-    0xa5,
-    0x61 /* Ip */,
-  ]);
-
-  const stunMsg = StunMessage.from(packet);
-
-  expect(stunMsg.type).toBe(constants.messageType.BINDING_REQUEST);
-  expect(stunMsg.transactionId).toEqual(
-    Buffer.from('d00558707bb8cc6a633a9df7', 'hex')
-  );
-  expect(stunMsg.count).toBe(1);
-
-  const xorAddress = stunMsg.getAttribute(
-    constants.attributeType.XOR_MAPPED_ADDRESS
-  );
-  expect(xorAddress.type).toBe(constants.attributeType.XOR_MAPPED_ADDRESS);
-  expect(xorAddress.value).toEqual({
-    port: 63524,
-    family: 'IPv4',
-    address: '192.168.1.35',
-  });
-});
-
-test('decode unknown attributes', () => {
-  const packet = Buffer.from([
-    0,
-    0x01 /* Type */,
-    0,
-    12 /* Length */,
-    0x21,
-    0x12,
-    0xa4,
-    0x42 /* Cookie */,
-    0xd0,
-    0x05,
-    0x58,
-    0x70,
-    0x7b,
-    0xb8,
-    0xcc,
-    0x6a,
-    0x63,
-    0x3a,
-    0x9d,
-    0xf7 /* Transaction */,
-
-    0x88,
-    0x88 /* Should be an unknown attribute. */,
-    0,
-    8,
-    0,
-    0x1,
-    0xd9,
-    0x36,
-    0xe1,
-    0xba,
-    0xa5,
-    0x61,
-  ]);
-
-  expect(() => StunMessage.from(packet)).not.toThrow();
-
-  const stunMsg = StunMessage.from(packet);
-  const attr = stunMsg.getAttribute(0x8888);
-
-  expect(attr.valueType).toBe(constants.attributeValueType.UNKNOWN);
-  expect(attr.value).toEqual(
-    Buffer.from([0, 0x1, 0xd9, 0x36, 0xe1, 0xba, 0xa5, 0x61])
-  );
-});
-
-test('add FINGERPRINT', () => {
+test('should add FINGERPRINT', () => {
   const expectedBuffer = Buffer.from(
     '0101002c2112a442644d4f37326c71514d4f4a51' +
       '002000080001cc03e1baa56100080014a8fbde3bdc5ff7ab1e8' +
@@ -168,21 +19,21 @@ test('add FINGERPRINT', () => {
     'hex'
   );
 
-  const msg = new StunMessage();
+  const message = new StunRequest();
 
-  msg.setType(constants.messageType.BINDING_RESPONSE);
-  msg.setTransactionID(Buffer.from('644d4f37326c71514d4f4a51', 'hex'));
+  message.setType(messageType.BINDING_RESPONSE);
+  message.setTransactionId(Buffer.from('644d4f37326c71514d4f4a51', 'hex'));
 
-  const { XOR_MAPPED_ADDRESS, MESSAGE_INTEGRITY } = constants.attributeType;
+  const { XOR_MAPPED_ADDRESS, MESSAGE_INTEGRITY } = attributeType;
 
-  msg.addAttribute(XOR_MAPPED_ADDRESS, '192.168.1.35', 60689);
-  msg.addAttribute(
+  message.addAttribute(XOR_MAPPED_ADDRESS, '192.168.1.35', 60689);
+  message.addAttribute(
     MESSAGE_INTEGRITY,
     Buffer.from('a8fbde3bdc5ff7ab1e852a8c2cc6ef651cb74889', 'hex')
   );
 
-  expect(msg.addFingerprint()).toBe(true);
-  expect(msg.toBuffer()).toEqual(expectedBuffer);
+  expect(message.addFingerprint()).toBe(true);
+  expect(message.toBuffer()).toEqual(expectedBuffer);
 });
 
 test('add MESSAGE-INTEGRITY', () => {
@@ -193,34 +44,34 @@ test('add MESSAGE-INTEGRITY', () => {
     'hex'
   );
 
-  const msg = new StunMessage();
+  const message = new StunRequest();
 
-  msg.setType(constants.messageType.BINDING_RESPONSE);
-  msg.setTransactionID(Buffer.from('6f576f544a34445674305276', 'hex'));
+  message.setType(messageType.BINDING_RESPONSE);
+  message.setTransactionId(Buffer.from('6f576f544a34445674305276', 'hex'));
 
-  const { XOR_MAPPED_ADDRESS } = constants.attributeType;
-  msg.addAttribute(XOR_MAPPED_ADDRESS, '192.168.1.36', 64131);
+  const { XOR_MAPPED_ADDRESS } = attributeType;
+  message.addAttribute(XOR_MAPPED_ADDRESS, '192.168.1.36', 64131);
 
   const password = '6Gzr+PH5Krjg0VqBa81nE7n6';
 
-  expect(msg.addMessageIntegrity(password)).toBe(true);
-  expect(msg.toBuffer()).toEqual(expectedBuffer);
+  expect(message.addMessageIntegrity(password)).toBe(true);
+  expect(message.toBuffer()).toEqual(expectedBuffer);
 });
 
 test('FINGERPRINT should be uint32', () => {
-  const { SOFTWARE } = constants.attributeType;
-  const msg = new StunMessage();
+  const { SOFTWARE } = attributeType;
+  const message = new StunRequest();
 
-  msg.setType(constants.messageType.BINDING_RESPONSE);
-  msg.addAttribute(SOFTWARE, '123456789');
+  message.setType(messageType.BINDING_RESPONSE);
+  message.addAttribute(SOFTWARE, '123456789');
 
-  expect(msg.addFingerprint()).toBe(true);
+  expect(message.addFingerprint()).toBe(true);
 });
 
 test('iterator', () => {
-  const { BINDING_RESPONSE } = constants.messageType;
-  const { SOFTWARE, XOR_MAPPED_ADDRESS, FINGERPRINT } = constants.attributeType;
-  const message = new StunMessage();
+  const { BINDING_RESPONSE } = messageType;
+  const { SOFTWARE, XOR_MAPPED_ADDRESS, FINGERPRINT } = attributeType;
+  const message = new StunRequest();
 
   message.setType(BINDING_RESPONSE);
 
@@ -254,9 +105,9 @@ test('iterator', () => {
 });
 
 test('add address', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
-  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.setType(messageType.BINDING_RESPONSE);
   message.addAddress('127.0.0.1', 1516);
 
   const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
@@ -270,9 +121,9 @@ test('add address', () => {
 });
 
 test('add xor address', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
-  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.setType(messageType.BINDING_RESPONSE);
   message.addXorAddress('127.0.0.1', 1516);
 
   const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
@@ -286,9 +137,9 @@ test('add xor address', () => {
 });
 
 test('add alternate server  ', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
-  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.setType(messageType.BINDING_RESPONSE);
   message.addAlternateServer('127.0.0.1', 1516);
 
   const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
@@ -302,9 +153,9 @@ test('add alternate server  ', () => {
 });
 
 test('add username', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
-  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.setType(messageType.BINDING_RESPONSE);
   message.addUsername('stun/1.2.3');
 
   const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
@@ -313,9 +164,9 @@ test('add username', () => {
 });
 
 test('add invalid  username', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
-  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.setType(messageType.BINDING_RESPONSE);
 
   expect(() => message.addUsername('stun/1.2.3'.repeat(52))).toThrowError(
     /Username should be less than 513 bytes/i
@@ -325,9 +176,9 @@ test('add invalid  username', () => {
 });
 
 test('add software', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
-  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.setType(messageType.BINDING_RESPONSE);
   message.addSoftware('stun/1.2.3');
 
   const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
@@ -336,9 +187,9 @@ test('add software', () => {
 });
 
 test('add realm', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
-  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.setType(messageType.BINDING_RESPONSE);
   message.addRealm('stun/1.2.3');
 
   const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
@@ -347,9 +198,9 @@ test('add realm', () => {
 });
 
 test('add nonce', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
-  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.setType(messageType.BINDING_RESPONSE);
   message.addNonce('stun/1.2.3');
 
   const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
@@ -358,9 +209,9 @@ test('add nonce', () => {
 });
 
 test('add invalid nonce', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
-  message.setType(constants.messageType.BINDING_RESPONSE);
+  message.setType(messageType.BINDING_RESPONSE);
   expect(() => message.addNonce('stun/1.2.3'.repeat(13))).toThrowError(
     /less than 128 characters/i
   );
@@ -369,20 +220,21 @@ test('add invalid nonce', () => {
 
 describe('removeAttribute', () => {
   test('attr not found', () => {
-    const message = new StunMessage();
+    const message = new StunRequest();
 
-    expect(message.removeAttribute(attributeType.MAPPED_ADDRESS)).toEqual(
-      false
-    );
+    const attr = message.removeAttribute(attributeType.MAPPED_ADDRESS);
+    expect(attr).toBeUndefined();
   });
 
   test('from start', () => {
-    const message = new StunMessage();
+    const message = new StunRequest();
 
     message.addAddress('127.0.0.1', 1234);
     message.addXorAddress('127.0.0.1', 1516);
 
-    expect(message.removeAttribute(attributeType.MAPPED_ADDRESS)).toEqual(true);
+    const removedAttr = message.removeAttribute(attributeType.MAPPED_ADDRESS);
+    expect(removedAttr).not.toBeUndefined();
+    expect(removedAttr.type).toEqual(attributeType.MAPPED_ADDRESS);
 
     const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
     expect(attributes.length).toEqual(1);
@@ -390,14 +242,16 @@ describe('removeAttribute', () => {
   });
 
   test('from end', () => {
-    const message = new StunMessage();
+    const message = new StunRequest();
 
     message.addAddress('127.0.0.1', 1234);
     message.addXorAddress('127.0.0.1', 1516);
 
-    expect(message.removeAttribute(attributeType.XOR_MAPPED_ADDRESS)).toEqual(
-      true
+    const removedAttr = message.removeAttribute(
+      attributeType.XOR_MAPPED_ADDRESS
     );
+    expect(removedAttr).not.toBeUndefined();
+    expect(removedAttr.type).toEqual(attributeType.XOR_MAPPED_ADDRESS);
 
     const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
     expect(attributes.length).toEqual(1);
@@ -405,13 +259,15 @@ describe('removeAttribute', () => {
   });
 
   test('from the middle', () => {
-    const message = new StunMessage();
+    const message = new StunRequest();
 
     message.addSoftware('stun/1.2.3');
     message.addAddress('127.0.0.1', 1234);
     message.addXorAddress('127.0.0.1', 1516);
 
-    expect(message.removeAttribute(attributeType.MAPPED_ADDRESS)).toEqual(true);
+    const removedAttr = message.removeAttribute(attributeType.MAPPED_ADDRESS);
+    expect(removedAttr).not.toBeUndefined();
+    expect(removedAttr.type).toEqual(attributeType.MAPPED_ADDRESS);
 
     const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
     expect(attributes.length).toEqual(2);
@@ -422,9 +278,9 @@ describe('removeAttribute', () => {
 
 describe('add error', () => {
   test('should work', () => {
-    const message = new StunMessage();
+    const message = new StunRequest();
 
-    message.setType(constants.messageType.BINDING_ERROR_RESPONSE);
+    message.setType(messageType.BINDING_ERROR_RESPONSE);
     message.addError(300, 'hello world');
 
     const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
@@ -435,18 +291,18 @@ describe('add error', () => {
   });
 
   test('should be error type message', () => {
-    const message = new StunMessage();
+    const message = new StunRequest();
 
-    message.setType(constants.messageType.BINDING_RESPONSE);
+    message.setType(messageType.BINDING_RESPONSE);
     expect(() => message.addError(300, 'hello world')).toThrowError(
       'The attribute should be in ERROR_RESPONSE messages'
     );
   });
 
   test('invalid error code', () => {
-    const message = new StunMessage();
+    const message = new StunRequest();
 
-    message.setType(constants.messageType.BINDING_ERROR_RESPONSE);
+    message.setType(messageType.BINDING_ERROR_RESPONSE);
 
     expect(() => message.addError(200)).toThrowError(
       /Error code should between 300 - 699/i
@@ -457,23 +313,23 @@ describe('add error', () => {
   });
 
   test('should set default reason', () => {
-    const message = new StunMessage();
+    const message = new StunRequest();
 
-    message.setType(constants.messageType.BINDING_ERROR_RESPONSE);
+    message.setType(messageType.BINDING_ERROR_RESPONSE);
     message.addError(300);
 
     const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
     expect(attributes.length).toEqual(1);
     expect(attributes[0].type).toEqual(attributeType.ERROR_CODE);
-    expect(attributes[0].reason).toEqual(constants.errorReason.TRY_ALTERNATE);
+    expect(attributes[0].reason).toEqual(errorReason.TRY_ALTERNATE);
     expect(attributes[0].code).toEqual(300);
   });
 });
 
 test('add UNKNOWN-ATTRIBUTES', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
-  message.setType(constants.messageType.BINDING_ERROR_RESPONSE);
+  message.setType(messageType.BINDING_ERROR_RESPONSE);
   message.addUnknownAttributes([1, 2, 3]);
 
   const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
@@ -483,9 +339,9 @@ test('add UNKNOWN-ATTRIBUTES', () => {
 });
 
 test('add PRIORITY', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
-  message.setType(constants.messageType.BINDING_ERROR_RESPONSE);
+  message.setType(messageType.BINDING_ERROR_RESPONSE);
   message.addPriority(123);
 
   const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
@@ -502,7 +358,7 @@ test('add PRIORITY', () => {
 });
 
 test('add USE-CANDIDATE', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
   message.addUseCandidate();
 
@@ -512,7 +368,7 @@ test('add USE-CANDIDATE', () => {
 });
 
 test('add ICE-CONTROLLED', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
   const tiebreaker = Buffer.allocUnsafe(8);
   const invalidTiebreaker = Buffer.allocUnsafe(4);
@@ -539,7 +395,7 @@ test('add ICE-CONTROLLED', () => {
 });
 
 test('add ICE-CONTROLLING', () => {
-  const message = new StunMessage();
+  const message = new StunRequest();
 
   const tiebreaker = Buffer.allocUnsafe(8);
   const invalidTiebreaker = Buffer.allocUnsafe(4);

@@ -2,10 +2,10 @@
 
 const { StunMessageError, StunResponseError } = require('lib/errors');
 const { messageType } = require('lib/constants');
-const StunMessage = require('lib/message');
+const { createMessage } = require('lib/create-message');
 
 test('should use ERROR-CODE attribute for StunResponseError', () => {
-  const message = new StunMessage();
+  const message = createMessage();
 
   message.setType(messageType.BINDING_ERROR_RESPONSE);
   message.addError(300, 'hello world');
@@ -20,7 +20,7 @@ test('should use ERROR-CODE attribute for StunResponseError', () => {
 });
 
 test('should use fallback if ERROR-CODE attribute missed', () => {
-  const message = new StunMessage();
+  const message = createMessage();
 
   message.setType(messageType.BINDING_ERROR_RESPONSE);
 

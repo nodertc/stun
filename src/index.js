@@ -1,6 +1,7 @@
 'use strict';
 
-const StunMessage = require('lib/message');
+const StunRequest = require('message/request');
+const StunResponse = require('message/response');
 const StunServer = require('net/dgram-server');
 const defaultConstants = require('lib/constants');
 const {
@@ -15,6 +16,8 @@ const {
 const { request } = require('net/request');
 const { createServer } = require('net/create-server');
 const { createMessage, createTransaction } = require('lib/create-message');
+const encode = require('message/encode');
+const decode = require('message/decode');
 
 const constants = {};
 
@@ -25,7 +28,10 @@ module.exports = {
   request,
   validateFingerprint,
   validateMessageIntegrity,
-  StunMessage,
+  encode,
+  decode,
+  StunRequest,
+  StunResponse,
   StunServer,
   StunError,
   StunMessageError,
