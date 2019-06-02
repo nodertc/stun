@@ -25,14 +25,12 @@ npm i stun
 ```js
 const stun = require('stun');
 
-const { STUN_ATTR_XOR_MAPPED_ADDRESS } = stun.constants;
-
 stun.request('stun.l.google.com:19302', (err, res) => {
   if (err) {
     console.error(err);
   } else {
     const { address } = res.getXorAddress();
-    console.log('your ip:', address);
+    console.log('your ip', address);
   }
 });
 ```
@@ -46,19 +44,17 @@ $ stun # started on udp/0.0.0.0:3478
 
 ## API
 
-* [`createMessage(type): StunMessage`](#create-message)
+* [`createMessage(type: number [, transaction: Buffer]): StunRequest`](#create-message)
 * [`createTransaction(): Buffer`](#create-transaction)
-* [`createServer([socket: dgram.Socket]): StunServer`](#create-server)
+* [`createServer(options: Object): StunServer`](#create-server)
 * [`validateFingerprint(message: StunMessage): bool`](#validate-fingerprint)
 * [`validateMessageIntegrity(message: StunMessage, key: string): bool`](#validate-message-integrity)
 * [`request(url: string, [options: RequestOptions], callback: function): void`](#request)
-* [`class StunMessage`](#class-stun-message)
-  * [`static from(message: Buffer): StunMessage`](#class-stun-message-static-from)
-  * [`get type`](#class-stun-message-get-type)
-  * [`get transactionId`](#class-stun-message-get-type)
+* [`encode(message: StunMessage): Buffer`](#encode)
+* [`decode(message: Buffer): StunResponse`](#decode)
+* [`class StunRequest`](#class-stun-request)
   * [`setType(type)`](#class-stun-message-set-type)
-  * [`setTransactionID(transaction: Buffer): bool`](#class-stun-message-set-transaction-id)
-  * [`isLegacy(): bool`](#class-stun-message-is-legacy)
+  * [`setTransactionId(transaction: Buffer): bool`](#class-stun-message-set-transaction-id)
   * [`addAttribute(type, address: string, port: number)`](#class-stun-message-add-attribute-address)
   * [`addAttribute(type, value: String|Buffer[, encoding: string = 'utf8'])`](#class-stun-message-add-attribute-string)
   * [`addAttribute(type, value: number)`](#class-stun-message-add-attribute-number)
@@ -77,12 +73,32 @@ $ stun # started on udp/0.0.0.0:3478
   * [`addUseCandidate(): StunByteStringAttribute`](#class-stun-message-add-use-candidate)
   * [`addIceControlled(tiebreaker: Buffer): StunByteStringAttribute`](#class-stun-message-add-ice-controlled)
   * [`addIceControlling(tiebreaker: Buffer): StunByteStringAttribute`](#class-stun-message-add-ice-controlling)
-  * [`getAttribute(type): StunAttribute`](#class-stun-message-get-attribute)
   * [`removeAttribute(type): bool`](#class-stun-message-remove-attribute)
-  * [`get count: number`](#class-stun-message-get-count)
   * [`addMessageIntegrity(key: string)`](#class-stun-message-add-message-integrity)
   * [`addFingerprint()`](#class-stun-message-add-fingerprint)
   * [`toBuffer(): Buffer`](#class-stun-message-to-buffer)
+* [`class StunResponse`](#class-stun-response)
+  * [`getAddress(): Object`](#class-stun-response-get-address)
+  * [`getXorAddress(): Object`](#class-stun-response-get-xor-address)
+  * [`getAlternateServer(): Object`](#class-stun-response-get-alternate-server)
+  * [`getUsername(): string`](#class-stun-response-get-username)
+  * [`getError(): Object`](#class-stun-response-get-error)
+  * [`getRealm(): string`](#class-stun-response-get-realm)
+  * [`getNonce(): string`](#class-stun-response-get-nonce)
+  * [`getSoftware(): string`](#class-stun-response-get-software)
+  * [`getUnknownAttributes(): number[]`](#class-stun-response-get-unknown-attributes)
+  * [`getMessageIntegrity(): Buffer`](#class-stun-response-get-message-integrity)
+  * [`getFingerprint(): number`](#class-stun-response-get-fingerprint)
+  * [`getPriority(): number`](#class-stun-response-get-priority)
+  * [`getIceControlled(): Buffer`](#class-stun-response-get-ice-controlled)
+  * [`getIceControlling(): Buffer`](#class-stun-response-get-ice-controlling)
+* [`class StunMessage`](#class-stun-message)
+  * [`get type`](#class-stun-message-get-type)
+  * [`get transactionId`](#class-stun-message-get-type)
+  * [`isLegacy(): bool`](#class-stun-message-is-legacy)
+  * [`getAttribute(type): StunAttribute`](#class-stun-message-get-attribute)
+  * [`hasAttribute(type): bool`](#class-stun-message-has-attribute)
+  * [`get count: number`](#class-stun-message-get-count)
 * [`class StunServer`](#class-stun-server)
   * [`new StunServer(socket: dgram.Socket)`](#class-stun-server-new)
   * [`send(message: StunMessage, port: number, address: string[, cb: function])`](#class-stun-server-send)
@@ -98,16 +114,16 @@ $ stun # started on udp/0.0.0.0:3478
 * [`class StunAttribute`](#class-stun-attribute)
   * [`get type`](#class-stun-attribute-get-type)
   * [`get value`](#class-stun-attribute-get-value)
-* [`constants: object`](#constants)
+* [`constants: Object`](#constants)
 * [`class StunError`](#class-stun-error)
 * [`class StunMessageError`](#class-stun-message-error)
 * [`class StunResponseError`](#class-stun-response-error)
 
 <a name="create-message" />
 
-#### `createMessage(type): StunMessage`
+#### `createMessage(type: number [, transaction: Buffer]): StunRequest`
 
-Creates an `StunMessage` object of the specified `type` with random `transaction` field. The `type` argument is a number that should be a message type. See `constants` below.
+Creates an `StunRequest` object of the specified `type` with random `transaction` field. The `type` argument is a number that should be a message type. See `constants` below.
 
 <a name="create-transaction" />
 
@@ -117,11 +133,11 @@ Create transaction id for STUN message. Follow [RFC5389](https://tools.ietf.org/
 
 <a name="create-server" />
 
-#### `createServer(options: object): StunServer`
+#### `createServer(options: Object): StunServer`
 
 * `options.type: string`
 
-The type of socket. Must be 'udp'. Required.
+The type of socket. Must be 'udp4' or 'udp6'. Required.
 
 * `options.socket: dgram.Socket`
 
@@ -140,12 +156,12 @@ Check a `FINGERPRINT` attribute if it is specifed.
 Check a `MESSAGE_INTEGRITY` attribute if it is specifed.
 
 ```js
-stunServer.on('bindingResponse', (stunMsg) => {
-  if (!stun.validateFingerprint(stunMsg)) {
-    // do stuff...
+stunServer.on('bindingResponse', (msg) => {
+  if (!stun.validateFingerprint(msg)) {
+    // do stuff..
   }
 
-  if (!stun.validateMessageIntegrity(stunMsg, icePassword)) {
+  if (!stun.validateMessageIntegrity(msg, icePassword)) {
     // do stuff...
   }
 })
@@ -168,16 +184,24 @@ All options described below are optional.
 
 The last argument is a function with 2 arguments `err` and `res`. It's follow nodejs callback style. The second argument is instance of `StunMessage`.
 
-```js
-const { STUN_ATTR_XOR_MAPPED_ADDRESS } = stun.constants;
+<a name="encode" />
 
-stun.request('stun.l.google.com:19302', (err, res) => {
-  if (err) {
-    console.error(err);
-  } else {
-    const { address } = res.getAttribute(STUN_ATTR_XOR_MAPPED_ADDRESS).value;
-    console.log('your ip:', address);
-  }
+#### `encode(message: StunMessage): Buffer`
+
+Encode `StunRequest` or `StunResponse` into the Buffer.
+
+<a name="decode" />
+
+#### `decode(message: Buffer): StunResponse`
+
+Decode the Buffer into a `StunResponse`.
+
+```js
+const socket = dgram.createSocket({ type: 'udp4' });
+
+socket.on('message', (message) => {
+  const response = stun.decode(message);
+  // do stuff ...
 });
 ```
 
@@ -185,15 +209,7 @@ stun.request('stun.l.google.com:19302', (err, res) => {
 
 #### `class StunMessage`
 
-The `StunMessage` class is an utility that encapsulates the `STUN` protocol.
-
-Instances of the `StunMessage` class can be created using the `stun.createMessage()` function or the `StunMessage.from` method.
-
-<a name="class-stun-message-static-from" />
-
-* **static `from(message: Buffer): StunMessage`**
-
-Creates a `StunMessage` object from a `message` Buffer.
+The `StunMessage` class is an utility that encapsulates the `STUN` protocol. This is a base class for `StunRequest` and `StunResponse`.
 
 <a name="class-stun-message-get-type" />
 
@@ -201,6 +217,36 @@ Creates a `StunMessage` object from a `message` Buffer.
 * **get `transactionId`**
 
 Returns the `type` and `transactionId` fields from the current message.
+
+<a name="class-stun-message-is-legacy" />
+
+* **`isLegacy(): bool`**
+
+Returns true if the message confirms to RFC3489 rather than RFC5389.
+
+<a name="class-stun-message-get-attribute" />
+
+* **`getAttribute(type): StunAttribute`**
+
+Returns the `StunAttribute` attribute of the specified `type`. The `type` argument is a number that should be an attribute type. See `constants` below. Return `undefined` if attribute is not exist.
+
+**N.B.** This method return only first matched attribute. If you want to get another one, try this:
+
+```js
+const attributes = Array.from(stunMessage).filter(attribute => attribute.type === STUN_ATTR_MAPPED_ADDRESS);
+```
+
+<a name="class-stun-message-get-count" />
+
+* **get `count: number`**
+
+Returns the number of an attributes in the current message.
+
+<a name="class-stun-request" />
+
+#### `class StunRequest`
+
+The `StunRequest` encapsulates outgoing messages of the `STUN` protocol. Instances of the `StunRequest` can be created using the `createMessage()`.
 
 <a name="class-stun-message-set-type" />
 
@@ -210,15 +256,9 @@ Set the type of the message. The `type` argument is a number that should be a me
 
 <a name="class-stun-message-set-transaction-id" />
 
-* **`setTransactionID(transaction: Buffer): bool`**
+* **`setTransactionId(transaction: Buffer): bool`**
 
 Set the transaction id of the message. The `transaction` argument should be a `Buffer` and have length 12 bytes.
-
-<a name="class-stun-message-is-legacy" />
-
-* **`isLegacy(): bool`**
-
-Returns true if the message confirms to RFC3489 rather than RFC5389.
 
 <a name="class-stun-message-add-attribute-address" />
 
@@ -403,23 +443,11 @@ Adds a `ICE-CONTROLLING` attribute to the message.
 
 See [RFC8445](https://tools.ietf.org/html/rfc8445#section-16.1)
 
-<a name="class-stun-message-get-attribute" />
-
-* **`getAttribute(type): StunAttribute`**
-
-Returns the `StunAttribute` attribute of the specified `type`. The `type` argument is a number that should be an attribute type. See `constants` below.
-
 <a name="class-stun-message-remove-attribute" />
 
 * **`removeAttribute(type): bool`**
 
 Remove a `type` attribute from the current message. Returns true if an attribute was removed. The `type` argument is a number that should be an attribute type. See `constants` below.
-
-<a name="class-stun-message-get-count" />
-
-* **get `count: number`**
-
-Returns the number of an attributes in the current message.
 
 <a name="class-stun-message-add-message-integrity" />
 
