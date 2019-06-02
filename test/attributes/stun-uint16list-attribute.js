@@ -6,29 +6,29 @@ const constants = require('lib/constants');
 const type = constants.attributeType.UNKNOWN_ATTRIBUTES;
 
 test('encode', () => {
-  const attr = new StunUInt16ListAttribute(type);
+  const attribute = new StunUInt16ListAttribute(type);
 
-  attr.addType(1);
-  attr.addType(2);
-  attr.addType(3);
+  attribute.addType(1);
+  attribute.addType(2);
+  attribute.addType(3);
 
   const expectedBuffer = Buffer.from([0, 0x1, 0, 0x2, 0, 0x3]);
 
-  expect(attr.toBuffer()).toEqual(expectedBuffer);
+  expect(attribute.toBuffer()).toEqual(expectedBuffer);
 });
 
 test('decode', () => {
   const packet = Buffer.from([0, 0x1, 0, 0x2, 0, 0x3]);
 
-  const attr = StunUInt16ListAttribute.from(type, packet);
+  const attribute = StunUInt16ListAttribute.from(type, packet);
 
-  expect(attr.value).toEqual([1, 2, 3]);
+  expect(attribute.value).toEqual([1, 2, 3]);
 });
 
 test('encode # constructor', () => {
-  const attr = new StunUInt16ListAttribute(type, [1, 2, 3]);
+  const attribute = new StunUInt16ListAttribute(type, [1, 2, 3]);
 
   const expectedBuffer = Buffer.from([0, 0x1, 0, 0x2, 0, 0x3]);
 
-  expect(attr.toBuffer()).toEqual(expectedBuffer);
+  expect(attribute.toBuffer()).toEqual(expectedBuffer);
 });

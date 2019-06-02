@@ -45,9 +45,7 @@ test('should decode', () => {
 
   expect(message).toBeInstanceOf(StunResponse);
   expect(message.type).toBe(messageType.BINDING_REQUEST);
-  expect(message.transactionId).toEqual(
-    Buffer.from('d00558707bb8cc6a633a9df7', 'hex')
-  );
+  expect(message.transactionId).toEqual(Buffer.from('d00558707bb8cc6a633a9df7', 'hex'));
   expect(message.count).toBe(1);
 
   const xorAddress = message.getXorAddress();

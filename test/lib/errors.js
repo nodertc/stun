@@ -34,11 +34,11 @@ test('should use fallback if ERROR-CODE attribute missed', () => {
 });
 
 test('StunMessageError', () => {
-  const msg = Buffer.alloc(0);
-  const error = new StunMessageError(msg, {});
+  const message = Buffer.alloc(0);
+  const error = new StunMessageError(message, {});
 
   expect(error.message).toEqual('Invalid message');
-  expect(error.packet).toBe(msg);
+  expect(error.packet).toBe(message);
   expect(error.name).toEqual('StunMessageError');
   expect(error.sender).toEqual({});
 });

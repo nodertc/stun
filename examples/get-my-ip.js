@@ -4,11 +4,11 @@ const stun = require('..');
 
 const options = { timeout: 250, retries: 2 };
 
-stun.request('stun.l.google.com:19302', options, (err, res) => {
-  if (err) {
-    console.error(err);
+stun.request('stun.l.google.com:19302', options, (error, response) => {
+  if (error) {
+    console.error(error);
   } else {
-    const { address } = res.getXorAddress();
+    const { address } = response.getXorAddress();
     console.log('your ip:', address);
   }
 });

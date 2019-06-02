@@ -25,10 +25,7 @@ test('do not throw exception on invalid message', () => {
 
   server.process(message, {});
 
-  expect(server.emit).lastCalledWith(
-    'error',
-    new StunMessageError(message, {})
-  );
+  expect(server.emit).lastCalledWith('error', new StunMessageError(message, {}));
 });
 
 test('emit StunResponseError for an error messages', () => {
@@ -42,10 +39,7 @@ test('emit StunResponseError for an error messages', () => {
 
   server.process(message.toBuffer(), {});
 
-  expect(server.emit).lastCalledWith(
-    'error',
-    new StunResponseError(message, {})
-  );
+  expect(server.emit).lastCalledWith('error', new StunResponseError(message, {}));
 });
 
 test('should listen', () => {
@@ -61,10 +55,10 @@ test('should listen', () => {
   server.listen(123, 'localhost');
   expect(sock.bind).toBeCalledWith(123, 'localhost');
 
-  const cb = jest.fn();
-  server.listen(123, 'localhost', cb);
+  const callback = jest.fn();
+  server.listen(123, 'localhost', callback);
   expect(sock.bind).toBeCalledWith(123, 'localhost');
-  expect(server.once).lastCalledWith('listening', cb);
+  expect(server.once).lastCalledWith('listening', callback);
 });
 
 test('should call callbacks for `listening`', () => {
@@ -73,11 +67,11 @@ test('should call callbacks for `listening`', () => {
 
   const server = new Server(sock);
 
-  const cb = jest.fn();
-  server.listen(123, 'localhost', cb);
+  const callback = jest.fn();
+  server.listen(123, 'localhost', callback);
 
   server.emit('listening');
-  expect(cb).toBeCalledTimes(1);
+  expect(callback).toBeCalledTimes(1);
 });
 
 test('should emit `listening` event', () => {

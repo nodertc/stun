@@ -1,9 +1,6 @@
 'use strict';
 
-const {
-  validateFingerprint,
-  validateMessageIntegrity,
-} = require('lib/validate');
+const { validateFingerprint, validateMessageIntegrity } = require('lib/validate');
 const constants = require('lib/constants');
 const decode = require('message/decode');
 const { createMessage } = require('lib/create-message');
@@ -19,19 +16,19 @@ test('validate fingerprint', () => {
     'hex'
   );
 
-  const msg = decode(packet);
+  const message = decode(packet);
 
-  expect(validateFingerprint(msg)).toBe(true);
+  expect(validateFingerprint(message)).toBe(true);
 });
 
 test('`validateFingerprint` should support uint32 value', () => {
-  const msg = createMessage();
+  const message = createMessage();
 
-  msg.setType(BINDING_RESPONSE);
-  msg.addAttribute(SOFTWARE, '123456789');
-  msg.addFingerprint();
+  message.setType(BINDING_RESPONSE);
+  message.addAttribute(SOFTWARE, '123456789');
+  message.addFingerprint();
 
-  expect(validateFingerprint(msg)).toBe(true);
+  expect(validateFingerprint(message)).toBe(true);
 });
 
 test('validate MESSAGE INTEGRITY', () => {
@@ -42,21 +39,21 @@ test('validate MESSAGE INTEGRITY', () => {
     'hex'
   );
 
-  const msg = decode(packet);
+  const message = decode(packet);
   const password = '6Gzr+PH5Krjg0VqBa81nE7n6';
 
-  expect(validateMessageIntegrity(msg, password)).toBe(true);
+  expect(validateMessageIntegrity(message, password)).toBe(true);
 });
 
 test('validate MESSAGE INTEGRITY + FINGERPRINT', () => {
   const password = '6Gzr+PH5Krjg0VqBa81nE7n6';
-  const msg = createMessage();
+  const message = createMessage();
 
-  msg.setType(BINDING_RESPONSE);
-  msg.addAttribute(SOFTWARE, '123456789');
-  msg.addMessageIntegrity(password);
-  msg.addFingerprint();
+  message.setType(BINDING_RESPONSE);
+  message.addAttribute(SOFTWARE, '123456789');
+  message.addMessageIntegrity(password);
+  message.addFingerprint();
 
-  expect(validateMessageIntegrity(msg, password)).toBe(true);
-  expect(validateFingerprint(msg)).toBe(true);
+  expect(validateMessageIntegrity(message, password)).toBe(true);
+  expect(validateFingerprint(message)).toBe(true);
 });

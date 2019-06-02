@@ -62,14 +62,10 @@ test('should encode response', () => {
   message[kMessageType] = messageType.BINDING_REQUEST;
   message[kTransactionId] = Buffer.from('d00558707bb8cc6a633a9df7', 'hex');
 
-  const attr = attributes.create(
-    attributeType.XOR_MAPPED_ADDRESS,
-    '192.168.1.35',
-    63524
-  );
-  attr.setOwner(message);
+  const attribute = attributes.create(attributeType.XOR_MAPPED_ADDRESS, '192.168.1.35', 63524);
+  attribute.setOwner(message);
 
-  message[kAttributes].push(attr);
+  message[kAttributes].push(attribute);
 
   const expectedBuffer = Buffer.from([
     0,

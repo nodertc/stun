@@ -10,8 +10,8 @@ const { createServer } = require('net/create-server');
 test('should work', done => {
   expect.assertions(2);
 
-  request('stun://stun.l.google.com:19302', (err, res) => {
-    expect(err).toBe(null);
+  request('stun://stun.l.google.com:19302', (error, res) => {
+    expect(error).toBe(null);
     expect(res).toBeInstanceOf(StunResponse);
 
     done();
@@ -21,8 +21,8 @@ test('should work', done => {
 test('url normalization should work', done => {
   expect.assertions(2);
 
-  request('stun.l.google.com:19302', (err, res) => {
-    expect(err).toBe(null);
+  request('stun.l.google.com:19302', (error, res) => {
+    expect(error).toBe(null);
     expect(res).toBeInstanceOf(StunResponse);
 
     done();
@@ -50,17 +50,17 @@ test('should use provided message', done => {
   expect.assertions(2);
 
   const server = createServer({ type: 'udp4' });
-  const req = createMessage(messageType.BINDING_REQUEST);
+  const request_ = createMessage(messageType.BINDING_REQUEST);
 
   const options = {
     server,
     retries: 0,
-    message: req,
+    message: request_,
   };
 
-  request('stun.l.google.com:19302', options, (err, res) => {
-    expect(err).toBe(null);
-    expect(res.transactonId).toEqual(req.transactonId);
+  request('stun.l.google.com:19302', options, (error, res) => {
+    expect(error).toBe(null);
+    expect(res.transactonId).toEqual(request_.transactonId);
 
     done();
   });

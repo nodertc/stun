@@ -4,12 +4,7 @@ const constants = require('lib/constants');
 const StunAttribute = require('attributes/stun-attribute');
 const StunRequest = require('message/request');
 
-const {
-  attributeValueType,
-  attributeType,
-  messageType,
-  errorReason,
-} = constants;
+const { attributeValueType, attributeType, messageType, errorReason } = constants;
 
 test('should add FINGERPRINT', () => {
   const expectedBuffer = Buffer.from(
@@ -212,9 +207,7 @@ test('add invalid nonce', () => {
   const message = new StunRequest();
 
   message.setType(messageType.BINDING_RESPONSE);
-  expect(() => message.addNonce('stun/1.2.3'.repeat(13))).toThrowError(
-    /less than 128 characters/i
-  );
+  expect(() => message.addNonce('stun/1.2.3'.repeat(13))).toThrowError(/less than 128 characters/i);
   expect(message.count).toEqual(0);
 });
 
@@ -222,8 +215,8 @@ describe('removeAttribute', () => {
   test('attr not found', () => {
     const message = new StunRequest();
 
-    const attr = message.removeAttribute(attributeType.MAPPED_ADDRESS);
-    expect(attr).toBeUndefined();
+    const attribute = message.removeAttribute(attributeType.MAPPED_ADDRESS);
+    expect(attribute).toBeUndefined();
   });
 
   test('from start', () => {
@@ -232,9 +225,9 @@ describe('removeAttribute', () => {
     message.addAddress('127.0.0.1', 1234);
     message.addXorAddress('127.0.0.1', 1516);
 
-    const removedAttr = message.removeAttribute(attributeType.MAPPED_ADDRESS);
-    expect(removedAttr).not.toBeUndefined();
-    expect(removedAttr.type).toEqual(attributeType.MAPPED_ADDRESS);
+    const removedAttribute = message.removeAttribute(attributeType.MAPPED_ADDRESS);
+    expect(removedAttribute).not.toBeUndefined();
+    expect(removedAttribute.type).toEqual(attributeType.MAPPED_ADDRESS);
 
     const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
     expect(attributes.length).toEqual(1);
@@ -247,11 +240,9 @@ describe('removeAttribute', () => {
     message.addAddress('127.0.0.1', 1234);
     message.addXorAddress('127.0.0.1', 1516);
 
-    const removedAttr = message.removeAttribute(
-      attributeType.XOR_MAPPED_ADDRESS
-    );
-    expect(removedAttr).not.toBeUndefined();
-    expect(removedAttr.type).toEqual(attributeType.XOR_MAPPED_ADDRESS);
+    const removedAttribute = message.removeAttribute(attributeType.XOR_MAPPED_ADDRESS);
+    expect(removedAttribute).not.toBeUndefined();
+    expect(removedAttribute.type).toEqual(attributeType.XOR_MAPPED_ADDRESS);
 
     const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
     expect(attributes.length).toEqual(1);
@@ -265,9 +256,9 @@ describe('removeAttribute', () => {
     message.addAddress('127.0.0.1', 1234);
     message.addXorAddress('127.0.0.1', 1516);
 
-    const removedAttr = message.removeAttribute(attributeType.MAPPED_ADDRESS);
-    expect(removedAttr).not.toBeUndefined();
-    expect(removedAttr.type).toEqual(attributeType.MAPPED_ADDRESS);
+    const removedAttribute = message.removeAttribute(attributeType.MAPPED_ADDRESS);
+    expect(removedAttribute).not.toBeUndefined();
+    expect(removedAttribute.type).toEqual(attributeType.MAPPED_ADDRESS);
 
     const attributes = Array.from(message); // eslint-disable-line unicorn/prefer-spread
     expect(attributes.length).toEqual(2);
@@ -304,12 +295,8 @@ describe('add error', () => {
 
     message.setType(messageType.BINDING_ERROR_RESPONSE);
 
-    expect(() => message.addError(200)).toThrowError(
-      /Error code should between 300 - 699/i
-    );
-    expect(() => message.addError(700)).toThrowError(
-      /Error code should between 300 - 699/i
-    );
+    expect(() => message.addError(200)).toThrowError(/Error code should between 300 - 699/i);
+    expect(() => message.addError(700)).toThrowError(/Error code should between 300 - 699/i);
   });
 
   test('should set default reason', () => {
@@ -349,9 +336,7 @@ test('add PRIORITY', () => {
   expect(attributes[0].type).toEqual(attributeType.PRIORITY);
   expect(attributes[0].value).toEqual(123);
 
-  expect(() => message.addPriority(1.23)).toThrow(
-    /The argument should be 32-bit integer/i
-  );
+  expect(() => message.addPriority(1.23)).toThrow(/The argument should be 32-bit integer/i);
   expect(() => message.addPriority(Number.MAX_SAFE_INTEGER)).toThrow(
     /The argument should be 32-bit integer/i
   );
@@ -381,9 +366,7 @@ test('add ICE-CONTROLLED', () => {
   expect(attributes[0].type).toEqual(attributeType.ICE_CONTROLLED);
   expect(attributes[0].value).toEqual(tiebreaker);
 
-  expect(() => message.addIceControlled(123)).toThrow(
-    /shoud be a 64-bit unsigned integer/i
-  );
+  expect(() => message.addIceControlled(123)).toThrow(/shoud be a 64-bit unsigned integer/i);
   expect(() => message.addIceControlled(invalidTiebreaker)).toThrow(
     /shoud be a 64-bit unsigned integer/i
   );
@@ -408,9 +391,7 @@ test('add ICE-CONTROLLING', () => {
   expect(attributes[0].type).toEqual(attributeType.ICE_CONTROLLING);
   expect(attributes[0].value).toEqual(tiebreaker);
 
-  expect(() => message.addIceControlling(123)).toThrow(
-    /shoud be a 64-bit unsigned integer/i
-  );
+  expect(() => message.addIceControlling(123)).toThrow(/shoud be a 64-bit unsigned integer/i);
   expect(() => message.addIceControlling(invalidTiebreaker)).toThrow(
     /shoud be a 64-bit unsigned integer/i
   );

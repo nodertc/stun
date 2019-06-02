@@ -47,17 +47,15 @@ describe('should export constants', () => {
     const reason = `STUN_REASON_${errorReason}`;
 
     test(`should export ${reason}`, () => {
-      expect(stun.constants[reason]).toEqual(
-        constants.errorReason[errorReason]
-      );
+      expect(stun.constants[reason]).toEqual(constants.errorReason[errorReason]);
     });
   }
 
-  for (const attrType of Object.keys(constants.attributeType)) {
-    const attr = `STUN_ATTR_${attrType}`;
+  for (const attributeType of Object.keys(constants.attributeType)) {
+    const attribute = `STUN_ATTR_${attributeType}`;
 
-    test(`should export ${attr}`, () => {
-      expect(stun.constants[attr]).toEqual(constants.attributeType[attrType]);
+    test(`should export ${attribute}`, () => {
+      expect(stun.constants[attribute]).toEqual(constants.attributeType[attributeType]);
     });
   }
 

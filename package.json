@@ -29,10 +29,10 @@
   },
   "homepage": "https://github.com/nodertc/stun#readme",
   "devDependencies": {
-    "@nodertc/eslint-config": "^0.2.1",
-    "eslint": "^5.7.0",
+    "@nodertc/eslint-config": "^0.3.0",
+    "eslint": "^5.16.0",
     "jest": "^23.6.0",
-    "prettier": "^1.14.3"
+    "prettier": "^1.17.1"
   },
   "dependencies": {
     "binary-data": "^0.6.0",
@@ -63,6 +63,7 @@
     "coverageDirectory": "<rootDir>/coverage",
     "collectCoverageFrom": [
       "**/src/*.js",
+      "!**/src/cli.js",
       "**/src/node_modules/**/*.js"
     ],
     "coveragePathIgnorePatterns": [
@@ -81,7 +82,8 @@
     "rules": {
       "no-plusplus": "off",
       "no-bitwise": "off",
-      "consistent-return": "off"
+      "consistent-return": "off",
+      "jsdoc/require-returns": "off"
     },
     "overrides": [
       {
@@ -103,7 +105,9 @@
           }
         },
         "rules": {
-          "require-jsdoc": "off"
+          "require-jsdoc": "off",
+          "jsdoc/require-jsdoc": "off",
+          "unicorn/prevent-abbreviations": "off"
         }
       },
       {

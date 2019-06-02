@@ -32,8 +32,7 @@ const cli = meow(
  * @param {number} port
  * @returns {boolean}
  */
-const isLegalPort = port =>
-  Number.isInteger(port) && port > 0 && port <= 0xffff;
+const isLegalPort = port => Number.isInteger(port) && port > 0 && port <= 0xffff;
 
 const cliPort = Number(cli.flags.port);
 
@@ -43,20 +42,20 @@ const server = stun.createServer(socket);
 const { STUN_BINDING_RESPONSE, STUN_EVENT_BINDING_REQUEST } = stun.constants;
 const userAgent = `node/${process.version} stun/v${version}`;
 
-server.on(STUN_EVENT_BINDING_REQUEST, (req, rinfo) => {
-  const msg = stun.createMessage(STUN_BINDING_RESPONSE);
+server.on(STUN_EVENT_BINDING_REQUEST, (request, rinfo) => {
+  const message = stun.createMessage(STUN_BINDING_RESPONSE);
 
-  msg.addXorAddress(rinfo.address, rinfo.port);
-  msg.addSoftware(userAgent);
+  message.addXorAddress(rinfo.address, rinfo.port);
+  message.addSoftware(userAgent);
 
-  server.send(msg, rinfo.port, rinfo.address);
+  server.send(message, rinfo.port, rinfo.address);
 });
 
-server.on('error', err => {
-  process.stderr.write(err.message);
+server.on('error', error => {
+  process.stderr.write(error.message);
 
-  if (err instanceof stun.StunError) {
-    const { address, port } = err.sender;
+  if (error instanceof stun.StunError) {
+    const { address, port } = error.sender;
 
     process.stderr.write(` received from ${address}:${port}`);
   }

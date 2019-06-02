@@ -6,9 +6,9 @@ const constants = require('lib/constants');
 const type = constants.attributeType.MAPPED_ADDRESS;
 
 test('encode', () => {
-  const attr = new StunAddressAttribute(type, '192.168.1.2', 63524);
+  const attribute = new StunAddressAttribute(type, '192.168.1.2', 63524);
 
-  const buf = attr.toBuffer();
+  const buf = attribute.toBuffer();
   const expectedBuffer = Buffer.from([
     0 /* Reserved */,
     0x1 /* Family */,
