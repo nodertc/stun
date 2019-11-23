@@ -18,6 +18,11 @@ test('should work', done => {
   });
 });
 
+test('should work as promise', async () => {
+  const res = await request('stun://stun.l.google.com:19302');
+  expect(res).toBeInstanceOf(StunResponse);
+});
+
 test('url normalization should work', done => {
   expect.assertions(2);
 

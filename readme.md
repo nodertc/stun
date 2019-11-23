@@ -33,6 +33,11 @@ stun.request('stun.l.google.com:19302', (err, res) => {
     console.log('your ip', address);
   }
 });
+
+// or with promise
+
+const res = await stun.request('stun.l.google.com:19302');
+console.log('your ip', res.getXorAddress().address);
 ```
 
 ## CLI
@@ -170,6 +175,7 @@ stunServer.on('bindingResponse', (msg) => {
 <a name="request" />
 
 #### `request(url: string, [options: RequestOptions], callback: function): void`
+#### `request(url: string, [options: RequestOptions]): Promise`
 
 Create a request `STUN_BINDING_REQUEST` to stun server, follow [RFC5389](https://tools.ietf.org/html/rfc5389). The first argument may be a host (`stun.example.com`), host with port (`stun.example.com:1234`) or host with port and protocol (`stun://stun.example.com:1234`). By default, port is 3478.
 
