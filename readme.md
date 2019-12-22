@@ -501,7 +501,7 @@ Stops the processing of the incoming messages and emits `close` event.
 
 * **`listen(port: number, [address: string], [callback: function()])`**
 
-Attemt to listen for messages on a named `port` and optional `address`. For UDP servers calls [`socket.bind`](https://nodejs.org/dist/latest-v10.x/docs/api/dgram.html#dgram_socket_bind_port_address_callback) under the hood.
+Attempt to listen for messages on a named `port` and optional `address`. For UDP servers calls [`socket.bind`](https://nodejs.org/dist/latest-v10.x/docs/api/dgram.html#dgram_socket_bind_port_address_callback) under the hood.
 
 <a name="class-stun-server-event-binding-request" />
 
