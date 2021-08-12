@@ -7,7 +7,7 @@ const { messageType } = require('lib/constants');
 const StunServer = require('net/dgram-server');
 const { createServer } = require('net/create-server');
 
-test('should work', done => {
+test('should work', (done) => {
   expect.assertions(2);
 
   request('stun://stun.l.google.com:19302', (error, res) => {
@@ -23,7 +23,7 @@ test('should work as promise', async () => {
   expect(res).toBeInstanceOf(StunResponse);
 });
 
-test('url normalization should work', done => {
+test('url normalization should work', (done) => {
   expect.assertions(2);
 
   request('stun.l.google.com:19302', (error, res) => {
@@ -34,7 +34,7 @@ test('url normalization should work', done => {
   });
 });
 
-test('should use provided STUN server', done => {
+test('should use provided STUN server', (done) => {
   expect.assertions(1);
 
   const socket = {
@@ -51,7 +51,7 @@ test('should use provided STUN server', done => {
   });
 });
 
-test('should use provided message', done => {
+test('should use provided message', (done) => {
   expect.assertions(2);
 
   const server = createServer({ type: 'udp4' });
