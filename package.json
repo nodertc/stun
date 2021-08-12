@@ -71,13 +71,7 @@
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/"
     ],
-    "cacheDirectory": ".jest-cache",
-    "haste": {
-      "providesModuleNodeModules": [
-        "attributes",
-        "lib"
-      ]
-    }
+    "cacheDirectory": ".jest-cache"
   },
   "eslintConfig": {
     "extends": "@nodertc",
