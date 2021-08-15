@@ -6,6 +6,40 @@ const StunRequest = require('message/request');
 const StunResponse = require('message/response');
 const attributes = require('lib/attributes');
 
+const expectedEncodeArr = [];
+expectedEncodeArr.push(0);
+expectedEncodeArr.push(0x01); //  Type
+expectedEncodeArr.push(0);
+expectedEncodeArr.push(12); //    Length
+expectedEncodeArr.push(0x21);
+expectedEncodeArr.push(0x12);
+expectedEncodeArr.push(0xa4);
+expectedEncodeArr.push(0x42); //  Cookie
+expectedEncodeArr.push(0xd0);
+expectedEncodeArr.push(0x05);
+expectedEncodeArr.push(0x58);
+expectedEncodeArr.push(0x70);
+expectedEncodeArr.push(0x7b);
+expectedEncodeArr.push(0xb8);
+expectedEncodeArr.push(0xcc);
+expectedEncodeArr.push(0x6a);
+expectedEncodeArr.push(0x63);
+expectedEncodeArr.push(0x3a);
+expectedEncodeArr.push(0x9d);
+expectedEncodeArr.push(0xf7); //  Transaction
+expectedEncodeArr.push(0);
+expectedEncodeArr.push(0x20); //  XOR_MAPPED_ADDRESS
+expectedEncodeArr.push(0);
+expectedEncodeArr.push(8); //     Length
+expectedEncodeArr.push(0); //     Reserverd
+expectedEncodeArr.push(0x1); //   Family
+expectedEncodeArr.push(0xd9);
+expectedEncodeArr.push(0x36); //  Port
+expectedEncodeArr.push(0xe1);
+expectedEncodeArr.push(0xba);
+expectedEncodeArr.push(0xa5);
+expectedEncodeArr.push(0x61); //  Ip
+
 test('should encode request', () => {
   const message = new StunRequest();
 
@@ -13,13 +47,7 @@ test('should encode request', () => {
   message.setTransactionId(Buffer.from('d00558707bb8cc6a633a9df7', 'hex'));
   message.addAttribute(attributeType.XOR_MAPPED_ADDRESS, '192.168.1.35', 63524);
 
-  const expectedBuffer = Buffer.from([
-    0, 0x01 /* Type */, 0, 12 /* Length */, 0x21, 0x12, 0xa4, 0x42 /* Cookie */, 0xd0, 0x05, 0x58,
-    0x70, 0x7b, 0xb8, 0xcc, 0x6a, 0x63, 0x3a, 0x9d, 0xf7 /* Transaction */,
-
-    0, 0x20 /* XOR_MAPPED_ADDRESS */, 0, 8 /* Length */, 0 /* Reserved */, 0x1 /* Family */, 0xd9,
-    0x36 /* Port */, 0xe1, 0xba, 0xa5, 0x61 /* Ip */,
-  ]);
+  const expectedBuffer = Buffer.from(expectedEncodeArr);
 
   expect(encode(message)).toEqual(expectedBuffer);
 });
@@ -39,13 +67,7 @@ test('should encode response', () => {
 
   message[kAttributes].push(attribute);
 
-  const expectedBuffer = Buffer.from([
-    0, 0x01 /* Type */, 0, 12 /* Length */, 0x21, 0x12, 0xa4, 0x42 /* Cookie */, 0xd0, 0x05, 0x58,
-    0x70, 0x7b, 0xb8, 0xcc, 0x6a, 0x63, 0x3a, 0x9d, 0xf7 /* Transaction */,
-
-    0, 0x20 /* XOR_MAPPED_ADDRESS */, 0, 8 /* Length */, 0 /* Reserved */, 0x1 /* Family */, 0xd9,
-    0x36 /* Port */, 0xe1, 0xba, 0xa5, 0x61 /* Ip */,
-  ]);
+  const expectedBuffer = Buffer.from(expectedEncodeArr);
 
   expect(encode(message)).toEqual(expectedBuffer);
 });
