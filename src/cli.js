@@ -5,6 +5,7 @@
 const dgram = require('dgram');
 const meow = require('meow');
 const stun = require('.');
+/* eslint-disable-next-line import/extensions */
 const { version } = require('../package.json');
 
 const cli = meow(

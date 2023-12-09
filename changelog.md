@@ -1,9 +1,17 @@
 # Change Log
 All notable changes to the "stun" package will be documented in this file.
 
+
+## [2.1.1] - 2023-12-11
+
+- dep(parse-url): replace with native URL
+- ci: replace Travis with GitHub Actions
+
+
 ## [2.1.0] - 2019-11-23
 
 - `stun.request` supports promise interface.
+
 
 ## [2.0.0] - 2019-06-02
 

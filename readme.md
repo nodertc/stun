@@ -1,6 +1,7 @@
 # stun
 
-[![Build Status](https://travis-ci.org/nodertc/stun.svg?branch=master)](https://travis-ci.org/nodertc/stun)
+
+[![Build Status](https://github.com/nodertc/stun/actions/workflows/ci.yml/badge.svg)](https://github.com/nodertc/stun/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/stun.svg)](https://npmjs.org/package/stun)
 [![node](https://img.shields.io/node/v/stun.svg)](https://npmjs.org/package/stun)
 [![license](https://img.shields.io/npm/l/stun.svg)](https://npmjs.org/package/stun)
@@ -711,4 +712,4 @@ See above.
 
 ## License
 
-MIT, 2017-2019 (c) Dmitriy Tsvettsikh
+MIT, 2017-2023 (c) Dmitriy Tsvettsikh
