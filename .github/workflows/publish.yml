@@ -1,0 +1,59 @@
+name: publish
+
+on:
+  workflow_call:
+  push:
+    branches:
+      - master
+    paths:
+      - package.json
+
+env:
+  CI: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - run: npm install
+      - run: npm test
+
+  publish-npm:
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+      - uses: actions/setup-node@v3
+        with:
+          registry-url: https://registry.npmjs.org/
+      - name: publish to NPM
+        run: npm publish --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+  publish-gpr:
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    environment: ghpm
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: actions/setup-node@v3
+        with:
+          registry-url: https://npm.pkg.github.com/
+          scope: "@nodertc"
+      - name: rename package with @nodertc scope
+        run: node .npm/prepend-scope.cjs @nodertc
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
