@@ -1,12 +1,14 @@
 {
   "name": "stun",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "description": "Session Traversal Utilities for NAT (STUN) client and server.",
   "main": "src/index.js",
   "scripts": {
-    "lint": "npx eslint .",
+    "lint": "npx eslint",
+    "lintfix": "npx eslint --fix",
     "test": "npm run lint && npx jest",
-    "test-ci": "npx jest"
+    "test-ci": "npx jest",
+    "versions": "npx dependency-version-checker check"
   },
   "bin": "./src/cli.js",
   "repository": {
@@ -30,22 +32,22 @@
   "devDependencies": {
     "@nodertc/eslint-config": "^0.3.0",
     "eslint": "^7.32.0",
-    "jest": "^23.6.0",
-    "prettier": "^1.19.1"
+    "jest": "^27.5.1",
+    "prettier": "^2.8.8"
   },
   "dependencies": {
     "binary-data": "^0.6.0",
     "buffer-xor": "^2.0.2",
-    "debug": "^4.1.1",
-    "ip": "^1.1.5",
+    "debug": "^4.3.4",
+    "ip": "^2.0.0",
     "ip2buf": "^2.0.0",
     "is-stun": "^2.0.0",
-    "meow": "^5.0.0",
-    "turbo-crc32": "^1.0.0",
-    "universalify": "^0.1.2"
+    "meow": "^10.1.5",
+    "turbo-crc32": "^1.0.1",
+    "universalify": "^2.0.1"
   },
   "engines": {
-    "node": ">=8.3"
+    "node": ">=10"
   },
   "jest": {
     "modulePaths": [
