@@ -4,8 +4,8 @@
   "description": "Session Traversal Utilities for NAT (STUN) client and server.",
   "main": "src/index.js",
   "scripts": {
-    "lint": "npx eslint",
-    "lintfix": "npx eslint --fix",
+    "lint": "npx eslint .",
+    "lintfix": "npx eslint --fix .",
     "test": "npm run lint && npx jest",
     "test-ci": "npx jest",
     "versions": "npx dependency-version-checker check"
