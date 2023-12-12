@@ -5,7 +5,7 @@
 const dgram = require('dgram');
 const meow = require('meow');
 const stun = require('.');
-const { version } = require('../package.json');
+const { version } = require('../package');
 
 const cli = meow(
   `
@@ -32,7 +32,7 @@ const cli = meow(
  * @param {number} port
  * @returns {boolean}
  */
-const isLegalPort = port => Number.isInteger(port) && port > 0 && port <= 0xffff;
+const isLegalPort = (port) => Number.isInteger(port) && port > 0 && port <= 0xffff;
 
 const cliPort = Number(cli.flags.port);
 
@@ -51,7 +51,7 @@ server.on(STUN_EVENT_BINDING_REQUEST, (request, rinfo) => {
   server.send(message, rinfo.port, rinfo.address);
 });
 
-server.on('error', error => {
+server.on('error', (error) => {
   process.stderr.write(error.message);
 
   if (error instanceof stun.StunError) {

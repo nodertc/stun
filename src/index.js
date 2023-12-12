@@ -33,22 +33,22 @@ module.exports = {
 };
 
 // Export constants
-Object.keys(defaultConstants.messageType).forEach(messageType => {
+Object.keys(defaultConstants.messageType).forEach((messageType) => {
   constants[`STUN_${messageType}`] = defaultConstants.messageType[messageType];
 });
 
-Object.keys(defaultConstants.errorCode).forEach(errorCode => {
+Object.keys(defaultConstants.errorCode).forEach((errorCode) => {
   constants[`STUN_CODE_${errorCode}`] = defaultConstants.errorCode[errorCode];
 });
 
-Object.keys(defaultConstants.errorReason).forEach(errorReason => {
+Object.keys(defaultConstants.errorReason).forEach((errorReason) => {
   constants[`STUN_REASON_${errorReason}`] = defaultConstants.errorReason[errorReason];
 });
 
-Object.keys(defaultConstants.attributeType).forEach(attributeType => {
+Object.keys(defaultConstants.attributeType).forEach((attributeType) => {
   constants[`STUN_ATTR_${attributeType}`] = defaultConstants.attributeType[attributeType];
 });
 
-Object.keys(defaultConstants.eventNames).forEach(eventName => {
+Object.keys(defaultConstants.eventNames).forEach((eventName) => {
   constants[`STUN_${eventName}`] = defaultConstants.eventNames[eventName];
 });
